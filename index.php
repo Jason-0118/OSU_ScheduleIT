@@ -1,4 +1,4 @@
-<?php include 'inc/header.php'; ?>
+<?php ob_start(); include 'inc/header.php'; ?>
 
 <?php
 $topic = $location = $method =  '';
