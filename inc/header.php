@@ -1,3 +1,7 @@
+<?php 
+include 'config/database.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,9 +42,9 @@
             </div>
 
             <!-- link -->
-            <ul class="absolute bg-darkGray w-full h-full left-0 z-[1] opacity-0 md:bg-orange md:h-auto md:w-auto md:flex md:justify-center md:items-center  md:z-auto md:static md:w-auto md:opacity-100 duration-500">
+            <ul class="absolute bg-darkGray w-full h-full left-0 z-[-1] opacity-0 md:bg-orange md:h-auto md:w-auto md:flex md:justify-center md:items-center  md:z-auto md:static md:w-auto md:opacity-100 duration-500">
                 <!-- <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange  "><a class="ml-[100px] font-semibold text-2xl text-white md:text-darkGray md:ml-0 md:hover:text-white duration-100 " href="#">Creating</a></li> -->
-                <li class="my-6 p-3 md:my-0 w-full hover:scale-105 duration-100 md:w-auto md:hover:bg-orange  "><a class="ml-[100px] font-semibold text-2xl text-white bg-orange p-3 rounded-lg md:text-darkGray md:ml-0 md:hover:text-white duration-100 " href="#">Creating</a></li>
+                <li class="my-6 p-3 md:my-0 w-full hover:scale-105 duration-100 md:w-auto md:hover:bg-orange  "><a class="ml-[100px] font-semibold text-2xl text-white bg-orange p-3 rounded-lg md:text-darkGray md:ml-0 md:hover:text-white duration-100 " href="index.php">Creating</a></li>
                 <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange  "><a class="ml-[100px] font-semibold text-2xl text-white md:text-darkGray md:hover:text-white duration-100 " href="#">Meeting</a></li>
                 <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange  "><a class="ml-[100px] font-semibold text-2xl text-white md:text-darkGray md:hover:text-white duration-100 " href="#">Calendar</a></li>
                 <hr>
