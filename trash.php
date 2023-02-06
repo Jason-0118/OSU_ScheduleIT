@@ -1,11 +1,32 @@
-<?php ob_start();
-include 'inc/header.php';  ?>
+<?php 
+ob_start();
+$header_path = $footer_path = $_SERVER['DOCUMENT_ROOT'];
+$header_path .= "/OSU_ScheduleIT/header.php";
+$footer_path .="/OSU_ScheduleIT/footer.php";
+include_once($header_path);
+?>
 
 
-<!-- process bar -->
-<div class="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
-  <div class="bg-darkGray h-1 md:h-1.5 rounded-full dark:bg-gray-500" style="width: 66%"></div>
-</div>
+<?php
+$topic = $_SESSION['topic'];
+$location = $_SESSION['location'];
+$method = $_SESSION['method'];
+$start_date = $_SESSION['start_date'];
+$end_date = $_SESSION['end_date'];
+$time_duration = $_SESSION['time_duration'];
+echo "previous page data => $topic - $location - $method - $start_date - $end_date - $time_duration";
+?>
+
+<?php
+$topic = $_SESSION['topic'];
+$location = $_SESSION['location'];
+$method = $_SESSION['method'];
+$start_date = $_SESSION['start_date'];
+$end_date = $_SESSION['end_date'];
+$time_duration = $_SESSION['time_duration'];
+echo "previous page data => $topic - $location - $method - $start_date - $end_date - $time_duration";
+?>
+
 
 
 <?php
@@ -22,7 +43,7 @@ $day_tail->add(new DateInterval('P1D'));
 $interval_day = new DateInterval('P1D'); // 1 day interval
 $day_range = new DatePeriod($day_head, $interval_day, $day_tail);
 
-echo "<div class = 'grid grid-cols-1 md:grid-cols-3'>";
+echo "<div class = 'grid grid-cols-1 md:grid-cols-4'>";
 foreach ($day_range as $col => $date) {
   $hour_head = new DateTime('8:00 AM');
   $hour_tail = new DateTime('5:00 PM');
@@ -59,43 +80,5 @@ echo "</div>";
   <input class="button p-3 bg-orange rounded-2xl px-10 cursor-pointer" type="submit" value="Next"></input>
 </div>
 
-<script>
-  //timeslot
-  const rectangles = document.querySelectorAll('.rectangle');
-  rectangles.forEach(function(rectangle) {
-    rectangle.addEventListener('click', function() {
-      if (rectangle.classList.contains('bg-gray')) {
-        rectangle.classList.remove('bg-gray');
-        rectangle.classList.add('bg-selected_orange');
-      } else {
-        rectangle.classList.remove('bg-selected_orange')
-        rectangle.classList.add('bg-gray')
-      }
-    })
-  });
 
-  //btn
-  //find all the selected time and insert into array
-  const btn = document.querySelector('.button');
-  btn.addEventListener('click', function() {
-
-    selected_time_array = []
-    const selected_time = document.querySelectorAll('.bg-selected_orange')
-    selected_time.forEach(function(timeslot) {
-      value = timeslot.getAttribute('date-time')
-      selected_time_array.push(value)
-    })
-    console.log(selected_time_array)
-
-    $.ajax({
-      url:"next.php",
-      type: "post",
-      data: {selected_time_array: selected_time_array},
-      success:function(response){
-        console.log("Sent successfully");
-        window.location.href = "next.php";
-      }
-    });
-  })
-</script>
-<?php include 'inc/footer.php'; ?>
+<?php include_once($footer_path); ?>
