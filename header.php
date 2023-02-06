@@ -1,6 +1,5 @@
 <?php 
-session_start();
-$path = $_SERVER['SERVER_NAME'] . '/OSU_ScheduleIT';
+include 'config/database.php';
 date_default_timezone_set('America/Los_Angeles');
 
 ?>
@@ -14,6 +13,9 @@ date_default_timezone_set('America/Los_Angeles');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- for ajax in timeslot.php -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- rich text editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>

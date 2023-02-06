@@ -1,5 +1,8 @@
 <?php ob_start();
-include 'inc/header.php';  ?>
+$header_path = $footer_path = $_SERVER['DOCUMENT_ROOT'];
+$header_path .= "/OSU_ScheduleIT/header.php";
+$footer_path .= "/OSU_ScheduleIT/footer.php";
+include_once($header_path);  ?>
 
 <!-- process bar -->
 <div class="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
@@ -15,7 +18,9 @@ if (isset($_POST['selected_time_array'])) {
   foreach($_SESSION['selected_time_array'] as $timeslot){
     echo "<p>" . gmdate("Y-m-d H:i:s", $timeslot) . "</p>"; 
   }
+  
+
 
 ?>
 
-<?php include 'inc/footer.php'; ?>
+<?php include_once($footer_path); ?>

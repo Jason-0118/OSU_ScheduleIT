@@ -1,6 +1,10 @@
-<?php ob_start();
+<?php 
+session_unset();
+ob_start();
+session_start();
 include_once 'header.php';
 ?>
+
 
 <?php
 $topicErr = $locationErr = '';
@@ -51,7 +55,7 @@ if (isset($_POST['submit'])) {
     $convert_end_date = DateTime::createFromFormat($format, $end_date);
 
     if (empty($topicErr) && empty($locationErr) && (empty($startDateErr) && empty($endDateErr) && ($convert_start_date <= $convert_end_date))) {
-        header('Location: /OSU_ScheduleIT/views/create/time.php');
+        header('Location: /OSU_ScheduleIT/views/create/create.php');
         // add to database
         // $sql = "INSERT INTO info (topic, location, method) VALUES ('$topic', '$location', '$method')";
         // if (mysqli_query($conn, $sql)) {
