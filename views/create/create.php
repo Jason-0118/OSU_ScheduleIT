@@ -40,15 +40,21 @@ if (isset($_POST['pem_array'])) {
 foreach ($_SESSION['pem_array'] as $pem) {
   echo "<p>" . $pem . "</p>";
 }
-// $enable_upload =
-if (isset($_POST['submit']) !== null) {
-
+//
+// add to database
+$sql = "INSERT INTO info (topic, location, method) VALUES ('$topic', '$location', '$method')";
+if (mysqli_query($conn, $sql)) {
+    // success
+    header('Location: time.php');
+} else {
+    // error
+    echo 'Error: ' . mysqli_error($conn);
 }
 
 ?>
 
 
-
+<!-- display html -->
 <?php
 $getDay = array('Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat');
 //get previous variable
@@ -131,12 +137,12 @@ echo "</div>";
   <!-- checkbox -->
   <div class="flex flex-col p-3">
     <div class="md:grid md:grid-cols-4">
-      <div><input type="checkbox" id="enable_upload" name="enable_upload" > Enable Attendees to Upload Files</input></div>
-      <div id="outter_require_upload" class="hidden text-orange ml-5"><input type="checkbox" id="require_upload" name="require_upload" > Require Attendees to Upload Files</input></div>
+      <div><input type="checkbox" id="enable_upload" name="enable_upload"> Enable Attendees to Upload Files</input></div>
+      <div id="outter_require_upload" class="hidden text-orange ml-5"><input type="checkbox" id="require_upload" name="require_upload"> Require Attendees to Upload Files</input></div>
     </div>
     <div class="md:grid md:grid-cols-4">
-      <div><input type="checkbox" id="enable_comment" name="enable_comment" > Enable Attendees to Comment</input></div>
-      <div id="outter_require_comment" class="hidden text-orange ml-5"><input type="checkbox" id="require_comment" name="require_comment" > Require Attendees to Comment</input></div>
+      <div><input type="checkbox" id="enable_comment" name="enable_comment"> Enable Attendees to Comment</input></div>
+      <div id="outter_require_comment" class="hidden text-orange ml-5"><input type="checkbox" id="require_comment" name="require_comment"> Require Attendees to Comment</input></div>
     </div>
   </div>
 
