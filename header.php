@@ -2,6 +2,46 @@
 include 'config/database.php';
 date_default_timezone_set('America/Los_Angeles');
 
+// UNTESTED FUNCTIONALITY
+// Define a function to handle a 404 error
+// function page_not_found() {
+//     http_response_code(404);
+//     echo "404 - Page not found";
+// }
+
+// // Define an array of routes that maps URLs to function names and filenames
+// // $routes = [
+// //     '/index.php' => ['function_name' => 'about_page', 'file_name' => 'views/about.php']
+// //     '/about' => ['function_name' => 'about_page', 'file_name' => 'views/about.php']
+// //     '/profile' => ['function_name' => 'profile_page', 'file_name' => 'views/profile.php']
+// // ];
+
+// // Get the requested URL from the browser
+// $request_uri = $_SERVER['REQUEST_URI'];
+
+// // Check if the requested URL is in the array of routes
+// if (array_key_exists($request_uri, $routes)) {
+//     // If it is, get the function name and file name
+//     $function_name = $routes[$request_uri]['function_name'];
+//     $file_name = $routes[$request_uri]['file_name'];
+    
+//     // Check if the file exists
+//     if (file_exists($file_name)) {
+//         // If it does, include the file and call the function
+//         include $file_name;
+//         if (function_exists($function_name)) {
+//             $function_name();
+//         } else {
+//             page_not_found();
+//         }
+//     } else {
+//         // If the file does not exist, call the 404 error function
+//         page_not_found();
+//     }
+// } else {
+//     // If the URL is not in the array of routes, call the 404 error function
+//     page_not_found();
+// }
 ?>
 
 <!DOCTYPE html>
@@ -71,7 +111,7 @@ date_default_timezone_set('America/Los_Angeles');
                     <img src="/OSU_ScheduleIT/img/profile.svg" alt="">
                     <div id="dropdown" class="absolute hidden top-full min-w-full w-max bg-white shadow-md mt-1 rounded">
                         <ul>
-                            <li class="my-3 p-2 hover:bg-gray"><a class="text-md" href="">Profile</a></li>
+                            <li class="my-3 p-2 hover:bg-gray"><a class="text-md" href="views/profile.php">Profile</a></li>
                             <li class="my-3 p-2 hover:bg-gray"><a class="text-md" href="">Log Out</a></li>
                         </ul>
                     </div>

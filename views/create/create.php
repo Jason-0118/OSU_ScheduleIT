@@ -42,14 +42,7 @@ foreach ($_SESSION['pem_array'] as $pem) {
 }
 //
 // add to database
-$sql = "INSERT INTO info (topic, location, method) VALUES ('$topic', '$location', '$method')";
-if (mysqli_query($conn, $sql)) {
-    // success
-    header('Location: time.php');
-} else {
-    // error
-    echo 'Error: ' . mysqli_error($conn);
-}
+
 
 ?>
 
