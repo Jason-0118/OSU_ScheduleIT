@@ -7,6 +7,10 @@ include_once 'header.php';
 
 
 <?php
+// Get the JSON string from the request body
+$jsonString = file_get_contents('php://input');
+
+
 $topicErr = $locationErr = '';
 //store start_date, end_date, time_duration
 $start_date = $end_date = $convert_start_date = $convert_end_date =  '';
@@ -58,13 +62,13 @@ if (isset($_POST['submit'])) {
         header('Location: /OSU_ScheduleIT/views/create/create.php');
         // add to database
         // $sql = "INSERT INTO info (topic, location, method) VALUES ('$topic', '$location', '$method')";
-        // if (mysqli_query($conn, $sql)) {
-        //     // success
-        //     header('Location: time.php');
-        // } else {
-        //     // error
-        //     echo 'Error: ' . mysqli_error($conn);
-        // }
+        if (mysqli_query($conn, $sql)) {
+            // success
+            header('Location: time.php');
+        } else {
+            // error
+            echo 'Error: ' . mysqli_error($conn);
+        }
     }
 }
 
@@ -143,3 +147,19 @@ if (isset($_POST['submit'])) {
 
 
 <?php include_once 'footer.php'; ?>
+
+
+<!-- index.php -->
+<script>
+  function Menu(self) {
+    const list = document.querySelector("ul");
+    self.name === 'menu-outline' ? (self.name = "close-outline", list.classList.add("top-[80px]"), list.classList.add("opacity-100"), list.classList.add("z-[100]")) :
+      (self.name = "menu-outline", list.classList.remove("top-[80px]"), list.classList.remove("opacity-100"), list.classList.remove("z-[100]"))
+  }
+
+
+  function Dropdown() {
+    const list = document.getElementById("dropdown");
+    list.classList.toggle("hidden");
+  }
+</script>
