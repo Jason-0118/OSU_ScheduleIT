@@ -15,69 +15,83 @@ if (isset($_POST['selected_time_array'])) {
 }
 
 // get text content via ajax
-if (isset($_POST['textContent'])) {
-  $_SESSION['description'] = $_POST['textContent'];
+if (isset($_POST['description'])) {
+  $_SESSION['description'] = $_POST['description'];
 }
 
 
 // get checkbox value via ajax
-if (isset($_POST['pem_array'])) {
-  $_SESSION['pem_array'] = $_POST['pem_array'];
+if (isset($_POST['allowComment'])) {
+  $_SESSION['allowComment'] = $_POST['allowComment'];
 }
 
-// // ------------------------------------------------debug output--------------
-// echo $topic , $location , $method , $start_date , $end_date , $time_duration;
-// foreach ($_SESSION['selected_time_array'] as $timeslot) {
-//   echo "<p>" . gmdate("Y-m-d H:i:s", $timeslot) . "</p>";
-// }
-// echo $_SESSION['description']. "<br>";
-// foreach ($_SESSION['pem_array'] as $pem) {
-//   echo "<p>" . $pem . "</p>";
-// }
-// // ------------------------------------------------debug output--------------
+// get checkbox value via ajax
+if (isset($_POST['allowUpload'])) {
+  $_SESSION['allowUpload'] = $_POST['allowUpload'];
+}
 
 
 if (isset($_POST['submit'])) {
-
-
-  //meeting table
+  //--------------------------- users table --------
   $onid = "zhangxin2";
+  $lastName = "Zhang";
+  $firstName = "Xin";
+  $hashUsers = substr(md5($onid), 0, 8);
+
+  //---------------------------  event data--------
   $topic = $_SESSION['topic'];
   $location = $_SESSION['location'];
   $method = $_SESSION['method'];
-  //date table
+  //0 = not able, 1 = able, 2 = require
+
+  $allowComment = empty($_SESSION['allowComment']) ? 0 : $_SESSION['allowComment'];
+  $allowUpload = empty($_SESSION['allowUpload']) ? 0 : $_SESSION['allowUpload'];
+  $description = empty($_SESSION['description']) ? "N/A" : $_SESSION['description'];
+
+  //---------------------------  options data--------
   $duration = $_SESSION['time_duration'];
+  $selected_time_array = $_SESSION['selected_time_array'];
+
+  //for graph
   $start_date = $_SESSION['start_date'];
   $end_date = $_SESSION['end_date'];
-  $selected_time_array = json_encode($_SESSION['selected_time_array']);
-  $pem_array = json_encode($_SESSION['pem_array']);
-  $description = $_SESSION['description'];
 
 
-  if (!empty($selected_time_array) && !empty($pem_array) && !empty($description)) {
-    $sql_meet = "INSERT INTO event(onid, topic, location, method) VALUES('$onid', '$topic', '$location', '$method')";
+  //check if users already exist
+  $sql_check_user = "SELECT onid FROM users WHERE onid = '$onid' ";
+  $result = mysqli_query($conn, $sql_check_user);
+  $row = mysqli_fetch_assoc($result);
+  if(!empty($row['onid'])) $user_onid = $row['onid'];
 
-    if (mysqli_query($conn, $sql_meet)) {
-      $sql_get_idEvent = "SELECT idEvent FROM event WHERE onid = '$onid' AND topic = '$topic' AND location = '$location' AND method = '$method' ";
-      $result = mysqli_query($conn, $sql_get_idEvent);
+  //insert to users table if user not exist
+  if (!empty($hashUsers) && !empty($onid) && !empty($lastName) && !empty($firstName) && empty($user_onid)) {
+    $sql_users = "INSERT INTO users(hashUsers, onid, lastName, firstName) VALUES ('$hashUsers', '$onid', '$lastName', '$firstName')";
+    mysqli_query($conn, $sql_users);
+  }
+
+  echo $hashUsers . "-" . $topic . "-" . $location . "-" . $method . "-" . $allowComment . "-" . $allowUpload . "-" . $description;
+  //insert event table
+  if (!empty($hashUsers) && !empty($topic) && !empty($location) && !empty($method)) {
+    $sql_event = "INSERT INTO event(hashUsers, topic, location, method, allowComment, allowUpload, description) VALUES ('$hashUsers', '$topic', '$location', '$method', '$allowComment', '$allowUpload', '$description')";
+    if (mysqli_query($conn, $sql_event)) {
+      $sql_event_id = "SELECT idEvent FROM event where hashUsers = '$hashUsers' AND topic = '$topic' AND location = '$location' AND description = '$description' ";
+      $result = mysqli_query($conn, $sql_event_id);
       $row = mysqli_fetch_assoc($result);
-      $idEvent = $row['idEvent'];
-
-      //update hashIdEvent in event
-      $hashed_value = hash('sha256', strval($idEvent));
-      $sql_update_hashed_value = "UPDATE event SET hashIdEvent = '$hashed_value' WHERE idEvent = '$idEvent' ";
-      mysqli_query($conn, $sql_update_hashed_value);
-
-
+      $idEvent = intval($row['idEvent']);
+      //hash id into 8 chars string
+      $hashEvent = substr(md5($idEvent), 0, 8);
+      $sql_update_event = "UPDATE event SET hashEvent = '$hashEvent' WHERE idEvent = '$idEvent' ";
+      mysqli_query($conn, $sql_update_event);
+      //store id for next page
       $_SESSION['idEvent'] = $idEvent;
-      
 
-
-      $sql_date = "INSERT INTO eventDetail(idEvent, duration, startDate, endDate, timeSlot, pem, description) VALUES('$idEvent','$duration', '$start_date', '$end_date', '$selected_time_array', '$pem_array', '$description')";
-      if (mysqli_query($conn, $sql_date))
-        header('Location: /OSU_ScheduleIT/views/create/summary.php?id=' . $hashed_value);
-    } else {
-      echo 'Error: ' . mysqli_error($conn);
+      // insert options table
+      foreach ($selected_time_array as $date) {
+        $dateStamp = date('Y-m-d H:i:s', $date);
+        $sql_options = "INSERT INTO options(idEvent, duration, date) VALUES ('$idEvent', '$duration', '$dateStamp') ";
+        mysqli_query($conn, $sql_options);
+      }
+      header('Location: /OSU_ScheduleIT/views/create/summary.php?id=' . $hashEvent);
     }
   }
 }
@@ -140,7 +154,7 @@ if (isset($_POST['submit'])) {
       $day = $date->format('Y-m-d');
       $hour = $time->format('g:i A');
       //UTC to PST 8 hours difference
-      echo "<div id='YouTime" . strtotime("$day $hour - 8 hour") . "'  class='rectangle w-[50px] h-[20px] bg-gray border-[.5px] ' data-row=" . $row . " data-col=" . $col . " date-time=" . strtotime("$day $hour - 8 hour") . "> </div>";
+      echo "<div id='YouTime" . strtotime("$day $hour") . "'  class='rectangle w-[50px] h-[20px] bg-gray border-[.5px] ' data-row=" . $row . " data-col=" . $col . " date-time=" . strtotime("$day $hour") . "> </div>";
     }
     echo "</div>";
     echo "</div>";
@@ -188,14 +202,12 @@ if (isset($_POST['submit'])) {
 
 
 <?php include_once($footer_path); ?>
-
-
 <!-- create.php -->
 <script>
   //timeslot
   const rectangles = document.querySelectorAll('.rectangle');
   rectangles.forEach(function(rectangle) {
-    rectangle.addEventListener('mouseover', function() {
+    rectangle.addEventListener('click', function() {
       if (rectangle.classList.contains('bg-gray')) {
         rectangle.classList.remove('bg-gray');
         rectangle.classList.add('bg-selected_orange');
@@ -303,26 +315,26 @@ if (isset($_POST['submit'])) {
     })
     //
     console.log(selected_time_array)
-    var textContent = quill.getText();
+    var description = quill.getText();
     console.log(quill.getText())
 
-    //1: enable_upload, 2:enable_comment, 3:require_upload, 4:require_comment
-    var pem_array = [0, 0, 0, 0];
+    var allowComment = 0;
+    var allowUpload = 0;
 
     var enable_upload_id = document.getElementById('enable_upload');
     if (enable_upload_id.checked) {
-      pem_array[0] = 1;
+      allowUpload = 1;
       var require_upload_id = document.getElementById('require_upload');
       if (require_upload_id.checked) {
-        pem_array[2] = 1;
+        allowUpload = 2;
       }
     }
     var enable_comment_id = document.getElementById('enable_comment');
     if (enable_comment_id.checked) {
-      pem_array[1] = 1;
+      allowComment = 1;
       var require_comment_id = document.getElementById('require_comment');
       if (require_comment_id.checked) {
-        pem_array[3] = 1;
+        allowComment = 2;
       }
     }
 
@@ -331,8 +343,10 @@ if (isset($_POST['submit'])) {
       type: "POST",
       data: {
         selected_time_array: selected_time_array,
-        textContent: textContent,
-        pem_array: pem_array,
+        description: description,
+        allowComment: allowComment,
+        allowUpload: allowUpload,
+
       },
       success: function(response) {
         console.log("Sent successfully");

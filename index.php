@@ -60,8 +60,6 @@ if (isset($_POST['submit'])) {
 
     if (empty($topicErr) && empty($locationErr) && (empty($startDateErr) && empty($endDateErr) && ($convert_start_date <= $convert_end_date))) {
         header('Location: /OSU_ScheduleIT/views/create/create.php');
-        // add to database
-        // $sql = "INSERT INTO info (topic, location, method) VALUES ('$topic', '$location', '$method')";
         if (mysqli_query($conn, $sql)) {
             // success
             header('Location: time.php');

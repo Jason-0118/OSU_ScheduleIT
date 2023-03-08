@@ -7,64 +7,107 @@ $footer_path .= "/OSU_ScheduleIT/footer.php";
 include_once($header_path);
 
 //from header('Location: /OSU_ScheduleIT/views/create/summary.php?id=' . $idEvent);
-$idEvent = $_SESSION['idEvent'];
+$hashEvent = $_GET['id'];
+$invite_link = "http://" . $_SERVER['HTTP_HOST'] . "/OSU_ScheduleIT/views/create/invite.php?id=" . $hashEvent;
 
-$sql = "SELECT e.topic, e.location, d.pem, e.hashIdEvent, e.onid, d.timeSlot, d.description, d.duration, d.startDate, d.endDate FROM event as e, eventDetail as d WHERE d.idEvent = e.idEvent AND d.idEvent = '$idEvent' ";
-//1: enable_upload, 2:enable_comment, 3:require_upload, 4:require_comment
-$result = mysqli_query($conn, $sql);
+//event table
+$sql_event = "SELECT topic, location, allowUpload, description, hashUsers FROM event where hashEvent = '$hashEvent' ";
+$result = mysqli_query($conn, $sql_event);
 $row = mysqli_fetch_assoc($result);
+
 $topic = $row['topic'];
 $location = $row['location'];
-$pem = json_decode($row['pem']);
-$timeslot = json_decode($row['timeSlot']);
+$allowUpload = $row['allowUpload'];
 $description = $row['description'];
+$hashUsers = $row['hashUsers'];
+
+if($allowUpload == 1 || $allowUpload == 2)
+{
+  $allowUpload = "Yes";
+}
+else
+{
+  $allowUpload = "No";
+}
+
+//options table
+$sql_options = "SELECT date FROM options WHERE idEvent = (SELECT idEvent from event WHERE hashEvent = '$hashEvent')";
+$result = mysqli_query($conn, $sql_options);
+$selected_date_array = array();
+$timeslot = array();
+while($row = mysqli_fetch_assoc($result))
+{
+  $selected_date_array[] = $row['date'];
+  $timeslot[] = strtotime($row['date']);
+}
+//get start date and end date for graph
+$start_date = min(array_map('strtotime', $selected_date_array));
+$start_date = date('Y-m-d', $start_date);
+
+$end_date = max(array_map('strtotime', $selected_date_array));
+$end_date = date('Y-m-d', $end_date);
+
+$sql_options = "SELECT duration FROM options WHERE idEvent = (SELECT idEvent from event WHERE hashEvent = '$hashEvent') LIMIT 1";
+$result = mysqli_query($conn, $sql_options);
+$row = mysqli_fetch_assoc($result);
 $duration = $row['duration'];
-$hashIdEvent = $row['hashIdEvent'];
-$start_date = $row['startDate'];
-$end_date = $row['endDate'];
+
+
+//users table
+$sql_users = "SELECT onid FROM users WHERE hashUsers = '$hashUsers' ";
+$result = mysqli_query($conn, $sql_users);
+$row = mysqli_fetch_assoc($result);
+
 $onid = $row['onid'];
 
+// echo $topic, $location ,$allowUpload, $description, $hashUsers,
+// $start_date, $end_date, $duration,
+// $onid, $timeslot[0];
 
-$enable_upload = "No";
-if ($pem[0] == 1) {
-  $enable_upload = "Yes";
+//---------- get data from reservatoin table -------------
+// $sql_reservations = "SELECT * FROM reservations WHERE idOptions = (SELECT idOptions FROM options WHERE idEvent = (SELECT idEvent FROM event WHERE hashEvent = '$hashEvent'))" ;
+// $result_reservations = mysqli_query($conn, $sql_reservations);
+
+
+
+
+//select name
+// select date from options, reservations where reservations.idOptions in (
+//   select idOptions from options where idEvent = (
+//   select idEvent from event where hashEvent = '1c383cd3') 
+//   and reservations.hashUsers in (....))
+  
+$dic_reservations = array();
+//get reservation name list
+$sql_reservations_name_list = "select DISTINCT users.firstName, users.lastName, users.hashUsers from users, reservations where users.hashUsers = reservations.hashUsers and reservations.idOptions in (
+  select idOptions from options where idEvent = (
+  select idEvent from event where hashEvent = '$hashEvent'))";
+$result_name_list = mysqli_query($conn, $sql_reservations_name_list);
+if(mysqli_num_rows($result_name_list) > 0 )
+{
+  foreach ($result_name_list as $name)
+  {
+    $full_name = $name['lastName'] . " " . $name['firstName'];
+    $hash_user = $name['hashUsers'];
+    // echo $hash_user . $full_name . " ";
+    $sql_reservations_time_list = "select date from options where idOptions in (select idOptions from reservations where hashUsers = '$hash_user')";
+    $result_time_list = mysqli_query($conn, $sql_reservations_time_list);
+    while ($row = $result_time_list->fetch_assoc()) {
+      $dic_reservations[$full_name] [] =  $row['date'];
+      // echo $row['date'] . "<br>";
+    }
+  }
 }
-$invite_link = "http://" . $_SERVER['HTTP_HOST'] . "/OSU_ScheduleIT/views/create/invite.php?id=" . $hashIdEvent;
 
-//get all attendees from mysql
-// <!-- sql: SELECT * FROM `attendees` WHERE idEventDetail = (select idEventDetail from eventDetail where idEvent = 94); -->
-$sql_get_attendees = "SELECT * FROM `attendees` WHERE idEventDetail = (select idEventDetail from eventDetail where idEvent = '$idEvent')";
-$result_attendees = mysqli_query($conn, $sql_get_attendees);
+//select timeslot
 
-// send email via onid
 
 
 
 if (isset($_POST['submit'])) {
-  // if(!empty($_POST['onid']))
-  // {
-  //   $onid_string = filter_input(INPUT_POST, 'onid', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-  //   $onid_array = explode(",", $onid_string);
-  //   var_dump($onid_array); 
-  //   foreach($onid_array as $name) {
 
-
-  //   }
-  // }
-  // $to = "jason.ps0118@gmail.com";
-  // $subject = "Invitation email: " ;
-  // $message = "message!!";
-
-  // $headers = array(
-  //   "MIME-Version" => "1.0",
-  //   "Content-Type" => "text/html;charset=UTF-8",
-  //   "From" => "zhanxin2@oregonstate.edu",
-  //   "Reply-To" => "zhanxin2@oregonstate.edu",
-  // );
-
-  // $send = mail($to, $subject, $message, $headers);
-  // echo ($send ? "Email is sent" : "error");
 }
+
 
 ?>
 
@@ -80,16 +123,12 @@ if (isset($_POST['submit'])) {
     <div class="border-2 border-orange p-5 space-y-5 md:w-full">
       <div class="grid grid-cols-2">
         <p><span class="font-bold">Title:</span> <?php echo $topic ?></p>
-        <p><span class="font-bold">Enable Attendees to Upload Files:</span> <?php echo $enable_upload ?></p>
+        <p><span class="font-bold">Enable Attendees to Upload Files:</span> <?php echo $allowUpload ?></p>
       </div>
       <div>
         <p><span class="font-bold">Link/Location:</span> <?php echo $location ?></p>
         <div class="grid grid-cols-1 mt-3">
-          <div class="font-bold">Selected Date (<?php if ($duration == "PT15M")
-                                                  echo "15mins";
-                                                elseif ($duration == "PT30M") echo "30mins";
-                                                else echo "60mins" ?>):
-          </div>
+          <div class="font-bold">Selected Date: </div>
           <!-- print small timeslot graph -->
           <?php
           $getDay = array('Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat');
@@ -106,7 +145,7 @@ if (isset($_POST['submit'])) {
           echo "<div class='overflow-x-scroll p-2 flex flex-col'> ";
           //print date header
           echo "<div class='flex w-max'> 
-              <div class='h-[20px] w-[60px]'>  </div>";
+              <div class='h-[20px] w-[80px]'>  </div>";
           foreach ($day_range as $date) {
             echo "<div class='flex flex-col items-center w-[50px] h-[60px]'>" .
               "<div class='text-xs'>" . $date->format('M') . " " .  ltrim(date("d", strtotime($date->format('Y-m-d'))), '0') . "</div>" .
@@ -140,8 +179,8 @@ if (isset($_POST['submit'])) {
               $day = $date->format('Y-m-d');
               $hour = $time->format('g:i A');
               //UTC to PST 8 hours difference
-              if (in_array(strtotime("$day $hour - 8 hour"), $timeslot)) echo "<div id='YouTime" . strtotime("$day $hour - 8 hour") . "'  class='w-[50px] h-[20px] bg-orange border-[.5px] ' data-row=" . $row . " data-col=" . $col . " date-time=" . strtotime("$day $hour - 8 hour") . "> </div>";
-              else echo "<div id='YouTime" . strtotime("$day $hour - 8 hour") . "'  class='w-[50px] h-[20px] bg-gray border-[.5px] ' data-row=" . $row . " data-col=" . $col . " date-time=" . strtotime("$day $hour - 8 hour") . "> </div>";
+              if (in_array(strtotime("$day $hour"), $timeslot)) echo "<div id='YouTime" . strtotime("$day $hour") . "'  class='w-[50px] h-[20px] bg-orange border-[.5px] ' data-row=" . $row . " data-col=" . $col . " date-time=" . strtotime("$day $hour") . "> </div>";
+              else echo "<div id='YouTime" . strtotime("$day $hour") . "'  class='w-[50px] h-[20px] bg-gray border-[.5px] ' data-row=" . $row . " data-col=" . $col . " date-time=" . strtotime("$day $hour") . "> </div>";
             }
             echo "</div>";
             echo "</div>";
@@ -188,30 +227,65 @@ if (isset($_POST['submit'])) {
       <tbody class="text-center">
         <!-- php loop here -->
         <?php
-        if (mysqli_num_rows($result_attendees) > 0) {
-          foreach ($result_attendees as $row) {
-            $timeSlot_array = json_decode($row['timeSlot']);
-            $onid = $row['onid'];
-            echo "<tr>";
+        foreach ($dic_reservations as $key => $value) {
+          $timeSlot_array = $value;
+          $onid = $key;
+          echo "<tr>";
             echo "<td class='border-y px-1 py-2'>" . $onid . "</td>";
             //for loop for date
             echo "<td class='border-y px-1 py-2'>";
             foreach ($timeSlot_array as $timeslot) {
-              echo date("Y-m-d", strtotime('+8 hours', $timeslot)) . "<br>";
+              $timestamp = strtotime($timeslot);
+              echo date("Y-m-d", $timestamp) . "<br>";
             }
             echo "</td>";
 
             //for loop for time
             echo "<td class='border-y px-1 py-2'>";
             foreach ($timeSlot_array as $timeslot) {
-              echo date("H:i:s A", strtotime('+8 hours', $timeslot)) . "<br>";
+              $timestamp = strtotime($timeslot);
+              echo date("H:i:s A", $timestamp) . "<br>";
             }
             echo "</td>";
 
-            echo "<td class='border-y px-1 py-2 cursor-pointer'> ❌ </td>";
+            //for loop for ❌
+            echo "<td class='border-y px-1 py-2 cursor-pointer'>";
+            foreach ($timeSlot_array as $timeslot) {
+              echo "❌" . "<br>";
+            }
+            echo "</td>";
             echo "</tr>";
-          }
         }
+
+        // if (mysqli_num_rows($result_reservations) > 0) {
+        //   foreach ($result_reservations as $row) {
+        //     $timeSlot_array = json_decode($row['timeSlot']);
+        //     $onid = $row['onid'];
+        //     echo "<tr>";
+        //     echo "<td class='border-y px-1 py-2'>" . $onid . "</td>";
+        //     //for loop for date
+        //     echo "<td class='border-y px-1 py-2'>";
+        //     foreach ($timeSlot_array as $timeslot) {
+        //       echo date("Y-m-d", strtotime('+8 hours', $timeslot)) . "<br>";
+        //     }
+        //     echo "</td>";
+
+        //     //for loop for time
+        //     echo "<td class='border-y px-1 py-2'>";
+        //     foreach ($timeSlot_array as $timeslot) {
+        //       echo date("H:i:s A", strtotime('+8 hours', $timeslot)) . "<br>";
+        //     }
+        //     echo "</td>";
+
+        //     //for loop for ❌
+        //     echo "<td class='border-y px-1 py-2 cursor-pointer'>";
+        //     foreach ($timeSlot_array as $timeslot) {
+        //       echo "❌" . "<br>";
+        //     }
+        //     echo "</td>";
+        //     echo "</tr>";
+        //   }
+        // }
 
         ?>
       </tbody>
@@ -282,7 +356,4 @@ if (isset($_POST['submit'])) {
     alert("copied link: " + content);
 
   })
-
-
-
 </script>

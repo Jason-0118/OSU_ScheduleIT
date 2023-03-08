@@ -1,7 +1,4 @@
 <?php
-
-use function PHPSTORM_META\type;
-
 session_start();
 ob_start();
 $header_path = $footer_path = $_SERVER['DOCUMENT_ROOT'];
@@ -10,65 +7,63 @@ $footer_path .= "/OSU_ScheduleIT/footer.php";
 include_once($header_path);
 
 //id from url
-$hashIdEvent = $_GET['id'];
+$hashEvent = $_GET['id'];
 
-$sql = "SELECT e.onid, e.topic, e.location, d.pem, d.timeSlot, d.description, d.duration, d.startDate, d.endDate FROM event as e, eventDetail as d WHERE d.idEvent = e.idEvent AND e.hashIdEvent = '$hashIdEvent' ";
-//1: enable_upload, 2:enable_comment, 3:require_upload, 4:require_comment
-$result = mysqli_query($conn, $sql);
+//event table
+$sql_event = "SELECT topic, location, allowUpload, description, hashUsers FROM event WHERE hashEvent = '$hashEvent' ";
+$result = mysqli_query($conn, $sql_event);
 $row = mysqli_fetch_assoc($result);
-$ONID = $row['onid'];
+
 $topic = $row['topic'];
 $location = $row['location'];
-$pem = json_decode($row['pem']);
-$timeslot = json_decode($row['timeSlot']);
+$allowUpload = $row['allowUpload'];
 $description = $row['description'];
-$start_date = $row['startDate'];
-$end_date = $row['endDate'];
-$time_duration = $row['duration'];
-
-$enable_upload = "No";
-if ($pem[0] == 1) {
-    $enable_upload = "Yes";
+$hashUsers = $row['hashUsers'];
+if ($allowUpload == 1 || $allowUpload == 2) {
+    $allowUpload = "Yes";
+} else {
+    $allowUpload = "No";
 }
 
+//options table
+$sql_options = "SELECT date FROM options WHERE idEvent = (SELECT idEvent from event WHERE hashEvent = '$hashEvent')";
+$result = mysqli_query($conn, $sql_options);
+$selected_date_array = array();
+$timeslot = array();
+while ($row = mysqli_fetch_assoc($result)) {
+    $selected_date_array[] = $row['date'];
+    $timeslot[] = strtotime($row['date']);
+}
+//get start date and end date for graph
+$start_date = min(array_map('strtotime', $selected_date_array));
+$start_date = date('Y-m-d', $start_date);
 
-//------------get total attendees
-$sql_get_attendees_num =
-    "select count(*) from attendees where idEventDetail = (
-    select idEventDetail from eventDetail where eventDetail.idEvent = 
-    (
-        select idEvent from event where hashIdEvent = '$hashIdEvent'
-    )
-)";
-$result_attendees_num = mysqli_query($conn, $sql_get_attendees_num);
-$attendees_num_row = mysqli_fetch_assoc($result_attendees_num);
-$total_attendees = $attendees_num_row['count(*)'] + 1;
+$end_date = max(array_map('strtotime', $selected_date_array));
+$end_date = date('Y-m-d', $end_date);
 
-//----------------------combine all timeslot from a attendees table----------------------
-//get timeSlot from creator
-$sql_get_creator_timeslot = "select timeSlot from eventDetail where idEvent = 
-    (
-        select idEvent from event where hashIdEvent = '$hashIdEvent'
-    )";
-$result_cretor_timslot = mysqli_query($conn, $sql_get_creator_timeslot);
-$timeslot_array = json_decode(mysqli_fetch_assoc($result_cretor_timslot)['timeSlot']);
-//get attendees timeslots
-$sql_get_attendees_timeSlot =
-    "select timeSlot from attendees where idEventDetail = (
-    select idEventDetail from eventDetail where eventDetail.idEvent = 
-    (
-        select idEvent from event where hashIdEvent = '$hashIdEvent'
-    )
-)";
-$result_attendees_timeslot = mysqli_query($conn, $sql_get_attendees_timeSlot);
-if (mysqli_num_rows($result_attendees_timeslot) > 0) {
-    foreach ($result_attendees_timeslot as $timeslot) {
-        $each_attendee_timeslot_array = json_decode($timeslot['timeSlot']);
-        $timeslot_array = array_merge($timeslot_array, $each_attendee_timeslot_array);
+$sql_options = "SELECT duration FROM options WHERE idEvent = (SELECT idEvent from event WHERE hashEvent = '$hashEvent') LIMIT 1";
+$result = mysqli_query($conn, $sql_options);
+$row = mysqli_fetch_assoc($result);
+$duration = $row['duration'];
+
+//users table
+$sql_users = "SELECT onid FROM users WHERE hashUsers = '$hashUsers' ";
+$result = mysqli_query($conn, $sql_users);
+$row = mysqli_fetch_assoc($result);
+$onid = $row['onid'];
+
+//get reservation slots using options table
+$max = 10; //hard code
+$sql_options = "SELECT date, totalSlots FROM options WHERE idEvent = (SELECT idEvent FROM event WHERE hashEvent = '$hashEvent')";
+$result = mysqli_query($conn, $sql_options);
+$timeslot_array = array();
+if (mysqli_num_rows($result) > 0) {
+    foreach ($result as $row) {
+        $timeslot_array[strtotime($row['date'])] = $row['totalSlots'];
     }
 }
-
-$count_timeslot_array = array_count_values($timeslot_array);
+// var_dump($timeslot_array);
+// echo $timeslot_array[1678204800];
 
 
 ?>
@@ -78,22 +73,40 @@ $count_timeslot_array = array_count_values($timeslot_array);
 if (isset($_POST['timeSlot'])) {
     $_SESSION['timeSlot'] = $_POST['timeSlot'];
 }
+$firstName = "John";
+$lastName = "Doe";
+$onid = "test_onid";
+$hashUsers = substr(md5($onid), 0, 8);
+
+//check if users already exist
+$sql_check_user = "SELECT onid FROM users WHERE onid = '$onid' ";
+$result = mysqli_query($conn, $sql_check_user);
+$row = mysqli_fetch_assoc($result);
+if(!empty($row['onid'])) $user_onid = $row['onid'];
+//insert to users table if user not exist
+if (!empty($hashUsers) && !empty($onid) && !empty($lastName) && !empty($firstName) && empty($user_onid)) {
+    $sql_users = "INSERT INTO users(hashUsers, onid, lastName, firstName) VALUES ('$hashUsers', '$onid', '$lastName', '$firstName')";
+    mysqli_query($conn, $sql_users);
+}
 
 if (isset($_POST['submit'])) {
-    $ONID = "test";
-
-    $timeslot = json_encode($_SESSION['timeSlot']);
-
-    $get_idEventDetail = "SELECT d.idEventDetail FROM eventDetail as d, event as e WHERE e.hashIdEvent = '$hashIdEvent' AND e.idEvent = d.idEvent ";
-    $result = mysqli_query($conn, $get_idEventDetail);
-    $row = mysqli_fetch_assoc($result);
-    $idEventDetail = $row['idEventDetail'];
-
-
-    $sql = "INSERT INTO attendees(idEventDetail, onid, timeSlot) VALUES('$idEventDetail', '$ONID', '$timeslot')";
-    if (mysqli_query($conn, $sql) && !empty($timeslot)) {
-        header('Location: /OSU_ScheduleIT/views/meeting/meeting.php');
+    $timeslot = $_SESSION['timeSlot'];
+    // echo date('Y-m-d H:i:s', $timeslot[0]);
+    //find idOPtions in options table by using hashEvent and date - in a loop
+    foreach ($timeslot as $date) {
+        $time = date('Y-m-d H:i:s', $date);
+        $sql_options = "SELECT idOptions from options WHERE date = '$time' AND idEvent = (SELECT idEvent from event WHERE hashEvent = '$hashEvent')";
+        $result = mysqli_query($conn, $sql_options);
+        $row = mysqli_fetch_assoc($result);
+        $idOptions = $row['idOptions'];
+        //then insert data to reservation 
+        $sql_reservations = "INSERT INTO reservations(idOptions, hashUsers) VALUES ('$idOptions', '$hashUsers')" ;
+        $sql_update_options = "UPDATE options SET totalSlots = totalSlots + 1 WHERE idOptions = '$idOptions'";
+        mysqli_query($conn, $sql_reservations);
+        mysqli_query($conn, $sql_update_options);
     }
+    header('Location: /OSU_ScheduleIT/views/meeting/meeting.php');
+
 }
 
 ?>
@@ -107,8 +120,8 @@ if (isset($_POST['submit'])) {
         </div>
         <div class="border-2 border-orange p-5 space-y-5 md:w-full">
             <div class="grid grid-cols-2">
-                <p><span class="font-bold">Creator:</span> <?php echo $ONID ?></p>
-                <p><span class="font-bold">Enable Attendees to Upload Files:</span> <?php echo $enable_upload ?></p>
+                <p><span class="font-bold">Creator:</span> <?php echo $onid ?></p>
+                <p><span class="font-bold">Enable Attendees to Upload Files:</span> <?php echo $allowUpload ?></p>
             </div>
             <div class="grid grid-cols-2">
                 <p><span class="font-bold">Title:</span> <?php echo $topic ?></p>
@@ -151,18 +164,18 @@ if (isset($_POST['submit'])) {
 
         $hour_head = new DateTime('8:00 AM');
         $hour_tail = new DateTime('5:00 PM');
-        $interval_hour = new DateInterval($time_duration); // time duration
+        $interval_hour = new DateInterval($duration); // time duration
         $hour_range = new DatePeriod($hour_head, $interval_hour, $hour_tail);
 
         echo "<div class='w-max '>";
         foreach ($hour_range as $row => $time) {
             echo "<div class='flex'>";
             //print time col
-            if ($time_duration == "PT15M" && $row % 4 == 0) {
+            if ($duration == "PT15M" && $row % 4 == 0) {
                 echo "<div class='text-sm h-[20px] w-[80px] sticky left-[-8px] bg-white/50 '>" . $time->format('g:i A') . "</div>";
-            } else if ($time_duration == "PT30M" && $row % 2 == 0) {
+            } else if ($duration == "PT30M" && $row % 2 == 0) {
                 echo "<div class='text-sm h-[20px] w-[80px] sticky left-[-8px] bg-white/50 '>" . $time->format('g:i A') . "</div>";
-            } else if ($time_duration == "PT60M") {
+            } else if ($duration == "PT60M") {
                 echo "<div class='text-sm h-[20px] w-[80px] sticky left-[-8px] bg-white/50 '>" . $time->format('g:i A') . "</div>";
             } else {
                 echo "<div class='text-sm h-[20px] w-[80px] sticky left-[-8px] bg-white/50 '> </div>";
@@ -174,10 +187,10 @@ if (isset($_POST['submit'])) {
                 $day = $date->format('Y-m-d');
                 $hour = $time->format('g:i A');
                 //UTC to PST 8 hours difference
-                if (in_array(strtotime("$day $hour - 8 hour"), $timeslot_array)) {
-                    echo "<div id='YouTime" . strtotime("$day $hour - 8 hour") . "'  class='rectangle w-[50px] h-[20px] bg-gray border-[.5px] ' data-row=" . $row . " data-col=" . $col . " date-time=" . strtotime("$day $hour - 8 hour") . "> </div>";
+                if (in_array(strtotime("$day $hour"), $timeslot)) {
+                    echo "<div id='YouTime" . strtotime("$day $hour") . "'  class='rectangle w-[50px] h-[20px] bg-gray border-[.5px] ' data-row=" . $row . " data-col=" . $col . " date-time=" . strtotime("$day $hour") . "> </div>";
                 } else {
-                    echo "<div id='YouTime" . strtotime("$day $hour - 8 hour") . "'  class='w-[50px] h-[20px] bg-gray border-[.5px] ' data-row=" . $row . " data-col=" . $col . " date-time=" . strtotime("$day $hour - 8 hour") . "> </div>";
+                    echo "<div id='YouTime" . strtotime("$day $hour") . "'  class='w-[50px] h-[20px] bg-gray border-[.5px] ' data-row=" . $row . " data-col=" . $col . " date-time=" . strtotime("$day $hour") . "> </div>";
                 }
             }
             echo "</div>";
@@ -216,18 +229,18 @@ if (isset($_POST['submit'])) {
 
         $hour_head = new DateTime('8:00 AM');
         $hour_tail = new DateTime('5:00 PM');
-        $interval_hour = new DateInterval($time_duration); // time duration
+        $interval_hour = new DateInterval($duration); // time duration
         $hour_range = new DatePeriod($hour_head, $interval_hour, $hour_tail);
 
         echo "<div class='w-max '>";
         foreach ($hour_range as $row => $time) {
             echo "<div class='flex'>";
             //print time col
-            if ($time_duration == "PT15M" && $row % 4 == 0) {
+            if ($duration == "PT15M" && $row % 4 == 0) {
                 echo "<div class='text-sm h-[20px] w-[80px] sticky left-[-8px] bg-white/50 '>" . $time->format('g:i A') . "</div>";
-            } else if ($time_duration == "PT30M" && $row % 2 == 0) {
+            } else if ($duration == "PT30M" && $row % 2 == 0) {
                 echo "<div class='text-sm h-[20px] w-[80px] sticky left-[-8px] bg-white/50 '>" . $time->format('g:i A') . "</div>";
-            } else if ($time_duration == "PT60M") {
+            } else if ($duration == "PT60M") {
                 echo "<div class='text-sm h-[20px] w-[80px] sticky left-[-8px] bg-white/50 '>" . $time->format('g:i A') . "</div>";
             } else {
                 echo "<div class='text-sm h-[20px] w-[80px] sticky left-[-8px] bg-white/50 '> </div>";
@@ -239,14 +252,10 @@ if (isset($_POST['submit'])) {
                 $day = $date->format('Y-m-d');
                 $hour = $time->format('g:i A');
                 //UTC to PST 8 hours difference
-                if (in_array(strtotime("$day $hour - 8 hour"), $timeslot_array)) {
-
-                    $opacity = floor(110 * $count_timeslot_array[strtotime("$day $hour - 8 hour")] / $total_attendees) / 100;
-                    // echo $count_timeslot_array[strtotime("$day $hour - 8 hour")] . "-";
-                    // echo $total_attendees. "-";
-                    // echo $opacity;
-                    echo "<div id='YouTime" . strtotime("$day $hour - 8 hour") . "'  class='rectangle2 w-[50px] h-[20px] bg-orange/[$opacity] border-[.5px] ' data-row=" . $row . " data-col=" . $col . " date-time=" . strtotime("$day $hour - 8 hour") . "> </div>";
-                } else echo "<div id='YouTime" . strtotime("$day $hour - 8 hour") . "'  class='w-[50px] h-[20px] bg-gray border-[.5px] ' data-row=" . $row . " data-col=" . $col . " date-time=" . strtotime("$day $hour - 8 hour") . "> </div>";
+                if (in_array(strtotime("$day $hour"), $timeslot)) {
+                    $opacity = floor(110 * $timeslot_array[strtotime("$day $hour")] / $max) / 100;
+                    echo "<div id='YouTime" . strtotime("$day $hour") . "'  class='rectangle2 w-[50px] h-[20px] bg-orange/[$opacity] border-[.5px] ' data-row=" . $row . " data-col=" . $col . " date-time=" . strtotime("$day $hour") . "> </div>";
+                } else echo "<div id='YouTime" . strtotime("$day $hour") . "'  class='w-[50px] h-[20px] bg-gray border-[.5px] ' data-row=" . $row . " data-col=" . $col . " date-time=" . strtotime("$day $hour") . "> </div>";
             }
             echo "</div>";
             echo "</div>";
@@ -288,16 +297,15 @@ if (isset($_POST['submit'])) {
             const rectangles2 = document.querySelectorAll('.rectangle2');
             Array.from(rectangles2).forEach(r2 => {
                 const r2_date_time = r2.getAttribute("date-time");
-                
-                if(r2_date_time == datetime && rectangle.classList.contains('bg-selected_orange')){
+
+                if (r2_date_time == datetime && rectangle.classList.contains('bg-selected_orange')) {
                     r2.classList.add('border-[2px]');
                     r2.classList.add('border-white');
-                }
-                else{
+                } else {
                     r2.classList.remove('border-[2px]');
                     r2.classList.remove('border-white');
                 }
-   
+
             });
 
 
