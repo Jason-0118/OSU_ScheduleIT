@@ -1,4 +1,4 @@
-<?php 
+<?php
 include 'config/database.php';
 date_default_timezone_set('America/Los_Angeles');
 
@@ -24,7 +24,7 @@ date_default_timezone_set('America/Los_Angeles');
 //     // If it is, get the function name and file name
 //     $function_name = $routes[$request_uri]['function_name'];
 //     $file_name = $routes[$request_uri]['file_name'];
-    
+
 //     // Check if the file exists
 //     if (file_exists($file_name)) {
 //         // If it does, include the file and call the function
@@ -48,6 +48,8 @@ date_default_timezone_set('America/Los_Angeles');
 <html lang="en">
 
 <head>
+    
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,19 +61,19 @@ date_default_timezone_set('America/Los_Angeles');
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            gray: '#969696', //mobile size hover bg color
-            darkGray: '#262626', //mobile size bg color
-            orange: '#D73F09',
-            selected_orange: '#D73F09',
-          }
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gray: '#969696', //mobile size hover bg color
+                        darkGray: '#262626', //mobile size bg color
+                        orange: '#D73F09',
+                        selected_orange: '#D73F09',
+                    }
+                }
+            }
         }
-      }
-    }
-  </script>
+    </script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <title>Document</title>
@@ -94,7 +96,7 @@ date_default_timezone_set('America/Los_Angeles');
                 <!-- <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange  "><a class="ml-[100px] font-semibold text-2xl text-white md:text-darkGray md:ml-0 md:hover:text-white duration-100 " href="#">Creating</a></li> -->
                 <li class="my-6 p-3 md:my-0 w-full hover:scale-105 duration-100 md:w-auto md:hover:bg-orange  "><a class="ml-[100px] font-semibold text-2xl text-white bg-orange p-3 rounded-lg md:text-darkGray md:ml-0 md:hover:text-white duration-100 " href="/OSU_ScheduleIT/index.php">Creating</a></li>
                 <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange  "><a class="ml-[100px] font-semibold text-2xl text-white md:text-darkGray md:hover:text-white duration-100 " href="#">Meeting</a></li>
-                <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange  "><a class="ml-[100px] font-semibold text-2xl text-white md:text-darkGray md:hover:text-white duration-100 " href="#">Calendar</a></li>
+                <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange  "><a class="ml-[100px] font-semibold text-2xl text-white md:text-darkGray md:hover:text-white duration-100 " href="./views/calendar/calendarPage.php">Calendar</a></li>
                 <hr>
                 <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange md:hidden"><a class="ml-[100px] font-semibold text-2xl text-white" href="#">Message</a></li>
                 <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange md:hidden"><a class="ml-[100px] font-semibold text-2xl text-white" href="#">Calendar</a></li>
