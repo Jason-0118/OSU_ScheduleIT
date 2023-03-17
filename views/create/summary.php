@@ -6,6 +6,7 @@ $header_path .= "/OSU_ScheduleIT/header.php";
 $footer_path .= "/OSU_ScheduleIT/footer.php";
 include_once($header_path);
 
+
 //from header('Location: /OSU_ScheduleIT/views/create/summary.php?id=' . $idEvent);
 $hashEvent = $_GET['id'];
 $invite_link = "http://" . $_SERVER['HTTP_HOST'] . "/OSU_ScheduleIT/views/create/invite.php?id=" . $hashEvent;

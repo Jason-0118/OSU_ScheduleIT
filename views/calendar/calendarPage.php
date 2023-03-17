@@ -1,6 +1,7 @@
 <?php
 session_start();
-include '../../calClass/calClass.php';
+include 'calClass/calClass.php';
+
 $header_path = $footer_path = $_SERVER['DOCUMENT_ROOT'];
 $header_path .= "/OSU_ScheduleIT/header.php";
 $footer_path .= "/OSU_ScheduleIT/footer.php";
@@ -19,20 +20,16 @@ $calendar = new Calendar($currentDate);
 <head>
 	<meta charset="utf-8">
 	<!-- Calendar -->
-    <link href="./views/calendar/calendarPage.css" rel="stylesheet" type="text/css">
-    <link href="./calClass/calClass.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link href="./views/calendar/calendarPage.css" rel="stylesheet" type="text/css">
+	<link href="calClass/calClass.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+	<link href="./calendarPage.css" rel="stylesheet" type="text/css">
 	<title>Schedule-It Calendar</title>
 
 </head>
 
 <body>
-	<nav class="navtop">
-		<div>
-			<h1>Schedule-It Calendar</h1>
-		</div>
-	</nav>
-
 	<br>
 	<div class="content calendar-controls">
 		<!-- change month-and-year view based on icon click -->
@@ -130,21 +127,24 @@ $calendar = new Calendar($currentDate);
 	<?php
 	// Include config file
 	//select all timeslot from event to cal the amout of days
-	echo "asdasd" . $hashEvent;
+	$firstName = "John";
+	$lastName = "Doe";
+	$onid = "test_onid";
+	$color = "#D73F09";
+	$dayCount = 1;
 
 	// query from database to get name, date, duration of event etc
-	$sql = "SELECT event.topic, options.date, options.duration
+	$sql = "SELECT event.topic, options.date
 					FROM event
 					INNER JOIN options
 					ON event.idEvent = options.idEvent";
-	$color = "#D73F09";
+	
 	// display queried event in calendar page after fetching columns specified from database
 	if ($result = mysqli_query($conn, $sql)) {
 		if (mysqli_num_rows($result) >= 0) {
 			while ($row = mysqli_fetch_array($result)) {
 				$name = $row['topic'];
 				$date = $row['date'];
-				$dayCount = $row['duration'];
 				// add event to calendar
 				$calendar->addEvent($name, $date, $dayCount, $color);
 			}
