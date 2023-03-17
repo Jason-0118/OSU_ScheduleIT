@@ -22,7 +22,7 @@ $calendar = new Calendar($currentDate);
 	<!-- Calendar -->
 	<link href="./views/calendar/calendarPage.css" rel="stylesheet" type="text/css">
 	<link href="calClass/calClass.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
 
 	<link href="./calendarPage.css" rel="stylesheet" type="text/css">
 	<title>Schedule-It Calendar</title>
@@ -108,11 +108,15 @@ $calendar = new Calendar($currentDate);
 		}
 
 		// jump to curr month 
-		echo "Jump to current month: " . "<a href='?month=$renderMonth&year=$renderYear' title='Today' data-toggle='tooltip'><span class='glyphicon glyphicon-calendar'></span></a> <br>";
+		echo "<div class= 'flex items-center'>";
+		echo "Jump to current month: " . "<a href='?month=$renderMonth&year=$renderYear' title='Today' data-toggle='tooltip'><span> <img src='../../img/calendar3.svg'> </span></a> <br>";
+		echo "</div>";
 
 		// display arrows to move thru months and years in calendar
-		echo "Traverse months: <a href='?month=$newMonth&year=$newYear&back=true' justify-content=center title='Previous Month' data-toggle='tooltip'><span class='glyphicon glyphicon-chevron-left'></span></a>";
-		echo "<a href='?month=$newMonth&year=$newYear&forward=true' title='Next Month' data-toggle='tooltip'><span class='glyphicon glyphicon-chevron-right'></span></a> <br>";
+		echo "<div class= 'flex items-center'>";
+		echo "Traverse months: <a href='?month=$newMonth&year=$newYear&back=true' justify-content=center title='Previous Month' data-toggle='tooltip'><span> <img src='../../img/chevron-left.svg'> </span></a>";
+		echo "<a href='?month=$newMonth&year=$newYear&forward=true' title='Next Month' data-toggle='tooltip'><span> <img src='../../img/chevron-right.svg'> </span></a> <br>";
+		echo "</div>";
 
 		// render calendar with new month-year view
 		$newDate = date('d-m-Y', strtotime($renderDay . "-" . $newMonth . "-" . $newYear));
