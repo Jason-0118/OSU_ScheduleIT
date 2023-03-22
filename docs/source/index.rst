@@ -11,6 +11,18 @@ Get started below:
 Usage
 =====
 
+
+Navigation
+----------
+
+To view the Schedule-It website, navigate to the following URL:
+
+.. code-block:: console
+
+   https://osu-scheduleit.000webhostapp.com/OSU_ScheduleIT/index.php
+
+
+
 .. _installation:
 
 Installation
@@ -22,15 +34,5 @@ To install the source code for the Schedule-It website, clone the Git repository
 
    git clone https://github.com/Jason-0118/OSU_ScheduleIT
 
-
-
-Navigation
-----------
-
-To view the Schedule-It website, navigate to the following URL:
-
-.. code-block:: console
-
-   https://osu-scheduleit.000webhostapp.com/OSU_ScheduleIT/index.php
 
 
