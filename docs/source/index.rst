@@ -7,14 +7,6 @@ to the familiar layout of OSU products
 
 Get started below:
 
-API
-===
-
-.. autosummary::
-   :toctree: generated
-
-   Schedule-It
-
 
 Usage
 =====
