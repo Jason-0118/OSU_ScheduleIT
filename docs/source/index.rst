@@ -16,10 +16,21 @@ Usage
 Installation
 ------------
 
-To view Schedule-It, first clone the Git repository:
+To install the source code for the Schedule-It website, clone the Git repository:
 
 .. code-block:: console
 
    git clone https://github.com/Jason-0118/OSU_ScheduleIT
+
+
+
+Navigation
+----------
+
+To view the Schedule-It website, navigate to the following URL:
+
+.. code-block:: console
+
+   https://osu-scheduleit.000webhostapp.com/OSU_ScheduleIT/index.php
 
 
