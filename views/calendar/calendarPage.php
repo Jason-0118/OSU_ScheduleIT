@@ -177,3 +177,5 @@ $calendar = new Calendar($currentDate);
 </body>
 
 </html>
+
+<?php include_once($footer_path); ?>

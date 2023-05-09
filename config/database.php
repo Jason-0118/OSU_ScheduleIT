@@ -4,6 +4,7 @@ define('DB_USER', 'jason');
 define('DB_PASS', '123456');
 define('DB_NAME', 'test');
 
+
 //create connection
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 

@@ -86,7 +86,7 @@ date_default_timezone_set('America/Los_Angeles');
             <!-- logo -->
             <div class="flex items-center justify-around cursor-pointer">
                 <img class="h-20 md:h-[80%]" src="/OSU_ScheduleIT/img/logo.svg" alt="">
-                <span class="text-4xl md:hidden cursor-pointer">
+                <span class="text-4xl sm:hidden cursor-pointer">
                     <ion-icon name="menu-outline" onclick="Menu(this)"></ion-icon>
                 </span>
             </div>
@@ -96,24 +96,24 @@ date_default_timezone_set('America/Los_Angeles');
                 <!-- <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange  "><a class="ml-[100px] font-semibold text-2xl text-white md:text-darkGray md:ml-0 md:hover:text-white duration-100 " href="#">Creating</a></li> -->
                 <li class="my-6 p-3 md:my-0 w-full hover:scale-105 duration-100 md:w-auto md:hover:bg-orange  "><a class="ml-[100px] font-semibold text-2xl text-white bg-orange p-3 rounded-lg md:text-darkGray md:ml-0 md:hover:text-white duration-100 " href="/OSU_ScheduleIT/index.php">Creating</a></li>
                 <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange  "><a class="ml-[100px] font-semibold text-2xl text-white md:text-darkGray md:hover:text-white duration-100 " href="/OSU_ScheduleIT/views/meeting/meeting.php">Meeting</a></li>
-                <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange  "><a class="ml-[100px] font-semibold text-2xl text-white md:text-darkGray md:hover:text-white duration-100 " href="views/calendar/calendarPage.php">Calendar</a></li>
+                <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange  "><a class="ml-[100px] font-semibold text-2xl text-white md:text-darkGray md:hover:text-white duration-100 " href="/OSU_ScheduleIT/views/calendar/calendarPage.php">Calendar</a></li>
                 <hr>
                 <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange md:hidden"><a class="ml-[100px] font-semibold text-2xl text-white" href="#">Message</a></li>
-                <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange md:hidden"><a class="ml-[100px] font-semibold text-2xl text-white" href="#">Calendar</a></li>
+                <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange md:hidden"><a class="ml-[100px] font-semibold text-2xl text-white" href="/OSU_ScheduleIT/views/calendar/calendarPage.php">Calendar</a></li>
                 <hr>
-                <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange md:hidden"><a class="ml-[100px] font-semibold text-2xl text-white" href="#">Profile</a></li>
+                <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange md:hidden"><a class="ml-[100px] font-semibold text-2xl text-white" href="/OSU_ScheduleIT/views/profile.php">Profile</a></li>
                 <li class="my-6 p-3 md:my-0 w-full hover:bg-gray md:w-auto md:hover:bg-orange md:hidden"><a class="ml-[100px] font-semibold text-2xl text-white" href="#">Log Out</a></li>
 
             </ul>
 
             <!-- profile -->
             <div class="hidden md:flex md:items-center z-[1]">
-                <img class="mr-[50px] md:h-[30%]" src="/OSU_ScheduleIT/img/message.svg" alt="">
+                <a href="/OSU_ScheduleIt/views/notifications.php"><img class="mr-[50px] md:h-[30%] cursor-pointer" src="/OSU_ScheduleIT/img/message.svg" alt=""></a>
                 <button onclick="Dropdown()" class="relative flex justify-center items-center">
                     <img src="/OSU_ScheduleIT/img/profile.svg" alt="">
                     <div id="dropdown" class="absolute hidden top-full min-w-full w-max bg-white shadow-md mt-1 rounded">
                         <ul>
-                            <li class="my-3 p-2 hover:bg-gray"><a class="text-md" href="views/profile.php">Profile</a></li>
+                            <li class="my-3 p-2 hover:bg-gray"><a class="text-md" href="/OSU_ScheduleIT/views/profile.php">Profile</a></li>
                             <li class="my-3 p-2 hover:bg-gray"><a class="text-md" href="">Log Out</a></li>
                         </ul>
                     </div>

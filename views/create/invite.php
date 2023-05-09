@@ -300,10 +300,10 @@ if (isset($_POST['submit'])) {
 
                 if (r2_date_time == datetime && rectangle.classList.contains('bg-selected_orange')) {
                     r2.classList.add('border-[2px]');
-                    r2.classList.add('border-white');
+                    r2.classList.add('border-orange');
                 } else {
                     r2.classList.remove('border-[2px]');
-                    r2.classList.remove('border-white');
+                    r2.classList.remove('border-orange');
                 }
 
             });
