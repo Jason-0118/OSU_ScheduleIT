@@ -22,6 +22,8 @@ $reservations_result = mysqli_query($conn, $sql_reservations);
 $reservations_rows = mysqli_fetch_all($reservations_result);
 // var_dump($reservations_rows);
 
+
+
 ?>
 
 
@@ -52,8 +54,8 @@ $reservations_rows = mysqli_fetch_all($reservations_result);
 
                 <?php
                 $i = 0;
-                $past_reservation;
-                $current_time = new DateTime();
+                $past_reservation = null;
+                $current_time = time();
                 $topic;
                 $location;
                 $description;
@@ -65,7 +67,7 @@ $reservations_rows = mysqli_fetch_all($reservations_result);
                         $attendee_rows = mysqli_fetch_assoc($attendee_result);
                         // var_dump($attendee_rows);
 
-                        if ($attendee_rows['date'] > $current_time) {
+                        if (strtotime($attendee_rows['date']) > $current_time) {
                             echo "<tr>";
                             echo " <td class='border-y px-1 py-2'> ";
                             echo $attendee_rows['topic'];
@@ -91,23 +93,25 @@ $reservations_rows = mysqli_fetch_all($reservations_result);
                         }
                     }
                 }
-                foreach ($past_reservation as $row) {
-                    echo "<tr>";
-                    echo " <td class='border-y px-1 py-2 '> ";
-                    echo $attendee_rows['topic'];
-                    echo "</td>";
-
-                    echo " <td class='border-y px-1 py-2'> ";
-                    echo $attendee_rows['location'];
-                    echo "</td>";
-
-                    echo " <td class='border-y px-1 py-2'> ";
-                    echo $attendee_rows['description'];
-                    echo "</td>";
-
-                    echo " <td class='border-y px-1 py-2 line-through decoration-pink-500'> ";
-                    echo $attendee_rows['date'];
-                    echo "</td>";
+                if($past_reservation != null){
+                    foreach ($past_reservation as $row) {
+                        echo "<tr>";
+                        echo " <td class='border-y px-1 py-2 '> ";
+                        echo $attendee_rows['topic'];
+                        echo "</td>";
+    
+                        echo " <td class='border-y px-1 py-2'> ";
+                        echo $attendee_rows['location'];
+                        echo "</td>";
+    
+                        echo " <td class='border-y px-1 py-2'> ";
+                        echo $attendee_rows['description'];
+                        echo "</td>";
+    
+                        echo " <td class='border-y px-1 py-2 line-through decoration-pink-500'> ";
+                        echo $attendee_rows['date'];
+                        echo "</td>";
+                    }
                 }
 
 

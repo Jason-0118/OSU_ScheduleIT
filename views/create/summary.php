@@ -236,7 +236,7 @@ if (isset($_POST['submit'])) {
 <!-- 4: register -->
 <div class="flex justify-center mt-10 ">
   <div class="w-[90%]">
-    <h2 class="font-bold text-orange text-xl">Invited Not Yet Registered</h2>
+    <h2 class="font-bold text-orange text-xl">Invited Not Yet Registered (hard code!!)</h2>
     <!-- table -->
     <table class="w-full">
       <thead>
