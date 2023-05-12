@@ -22,12 +22,9 @@ $allowUpload = $row['allowUpload'];
 $description = $row['description'];
 $hashUsers = $row['hashUsers'];
 
-if($allowUpload == 1 || $allowUpload == 2)
-{
+if ($allowUpload == 1 || $allowUpload == 2) {
   $allowUpload = "Yes";
-}
-else
-{
+} else {
   $allowUpload = "No";
 }
 
@@ -36,8 +33,7 @@ $sql_options = "SELECT date FROM options WHERE idEvent = (SELECT idEvent from ev
 $result = mysqli_query($conn, $sql_options);
 $selected_date_array = array();
 $timeslot = array();
-while($row = mysqli_fetch_assoc($result))
-{
+while ($row = mysqli_fetch_assoc($result)) {
   $selected_date_array[] = $row['date'];
   $timeslot[] = strtotime($row['date']);
 }
@@ -61,55 +57,29 @@ $row = mysqli_fetch_assoc($result);
 
 $onid = $row['onid'];
 
-// echo $topic, $location ,$allowUpload, $description, $hashUsers,
-// $start_date, $end_date, $duration,
-// $onid, $timeslot[0];
-
-//---------- get data from reservatoin table -------------
-// $sql_reservations = "SELECT * FROM reservations WHERE idOptions = (SELECT idOptions FROM options WHERE idEvent = (SELECT idEvent FROM event WHERE hashEvent = '$hashEvent'))" ;
-// $result_reservations = mysqli_query($conn, $sql_reservations);
-
-
-
-
-//select name
-// select date from options, reservations where reservations.idOptions in (
-//   select idOptions from options where idEvent = (
-//   select idEvent from event where hashEvent = '1c383cd3') 
-//   and reservations.hashUsers in (....))
-  
 $dic_reservations = array();
 //get reservation name list
 $sql_reservations_name_list = "select DISTINCT users.firstName, users.lastName, users.hashUsers from users, reservations where users.hashUsers = reservations.hashUsers and reservations.idOptions in (
   select idOptions from options where idEvent = (
   select idEvent from event where hashEvent = '$hashEvent'))";
 $result_name_list = mysqli_query($conn, $sql_reservations_name_list);
-if(mysqli_num_rows($result_name_list) > 0 )
-{
-  foreach ($result_name_list as $name)
-  {
+if (mysqli_num_rows($result_name_list) > 0) {
+  foreach ($result_name_list as $name) {
     $full_name = $name['lastName'] . " " . $name['firstName'];
     $hash_user = $name['hashUsers'];
     // echo $hash_user . $full_name . " ";
     $sql_reservations_time_list = "select date from options where idOptions in (select idOptions from reservations where hashUsers = '$hash_user')";
     $result_time_list = mysqli_query($conn, $sql_reservations_time_list);
     while ($row = $result_time_list->fetch_assoc()) {
-      $dic_reservations[$full_name] [] =  $row['date'];
+      $dic_reservations[$full_name][] =  $row['date'];
       // echo $row['date'] . "<br>";
     }
   }
 }
 
-//select timeslot
-
-
-
 
 if (isset($_POST['submit'])) {
-
 }
-
-
 ?>
 
 
@@ -232,62 +202,31 @@ if (isset($_POST['submit'])) {
           $timeSlot_array = $value;
           $onid = $key;
           echo "<tr>";
-            echo "<td class='border-y px-1 py-2'>" . $onid . "</td>";
-            //for loop for date
-            echo "<td class='border-y px-1 py-2'>";
-            foreach ($timeSlot_array as $timeslot) {
-              $timestamp = strtotime($timeslot);
-              echo date("Y-m-d", $timestamp) . "<br>";
-            }
-            echo "</td>";
+          echo "<td class='border-y px-1 py-2'>" . $onid . "</td>";
+          //for loop for date
+          echo "<td class='border-y px-1 py-2'>";
+          foreach ($timeSlot_array as $timeslot) {
+            $timestamp = strtotime($timeslot);
+            echo date("Y-m-d", $timestamp) . "<br>";
+          }
+          echo "</td>";
 
-            //for loop for time
-            echo "<td class='border-y px-1 py-2'>";
-            foreach ($timeSlot_array as $timeslot) {
-              $timestamp = strtotime($timeslot);
-              echo date("H:i:s A", $timestamp) . "<br>";
-            }
-            echo "</td>";
+          //for loop for time
+          echo "<td class='border-y px-1 py-2'>";
+          foreach ($timeSlot_array as $timeslot) {
+            $timestamp = strtotime($timeslot);
+            echo date("H:i:s A", $timestamp) . "<br>";
+          }
+          echo "</td>";
 
-            //for loop for ❌
-            echo "<td class='border-y px-1 py-2 cursor-pointer'>";
-            foreach ($timeSlot_array as $timeslot) {
-              echo "❌" . "<br>";
-            }
-            echo "</td>";
-            echo "</tr>";
+          //for loop for ❌
+          echo "<td class='border-y px-1 py-2 cursor-pointer'>";
+          foreach ($timeSlot_array as $timeslot) {
+            echo "❌" . "<br>";
+          }
+          echo "</td>";
+          echo "</tr>";
         }
-
-        // if (mysqli_num_rows($result_reservations) > 0) {
-        //   foreach ($result_reservations as $row) {
-        //     $timeSlot_array = json_decode($row['timeSlot']);
-        //     $onid = $row['onid'];
-        //     echo "<tr>";
-        //     echo "<td class='border-y px-1 py-2'>" . $onid . "</td>";
-        //     //for loop for date
-        //     echo "<td class='border-y px-1 py-2'>";
-        //     foreach ($timeSlot_array as $timeslot) {
-        //       echo date("Y-m-d", strtotime('+8 hours', $timeslot)) . "<br>";
-        //     }
-        //     echo "</td>";
-
-        //     //for loop for time
-        //     echo "<td class='border-y px-1 py-2'>";
-        //     foreach ($timeSlot_array as $timeslot) {
-        //       echo date("H:i:s A", strtotime('+8 hours', $timeslot)) . "<br>";
-        //     }
-        //     echo "</td>";
-
-        //     //for loop for ❌
-        //     echo "<td class='border-y px-1 py-2 cursor-pointer'>";
-        //     foreach ($timeSlot_array as $timeslot) {
-        //       echo "❌" . "<br>";
-        //     }
-        //     echo "</td>";
-        //     echo "</tr>";
-        //   }
-        // }
-
         ?>
       </tbody>
     </table>

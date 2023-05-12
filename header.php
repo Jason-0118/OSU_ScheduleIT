@@ -85,7 +85,7 @@ date_default_timezone_set('America/Los_Angeles');
         <div class="md:flex md:justify-around w-full bg-orange shadow-xl">
             <!-- logo -->
             <div class="flex items-center justify-around cursor-pointer">
-                <img class="h-20 md:h-[80%]" src="/OSU_ScheduleIT/img/logo.svg" alt="">
+                <a href="/OSU_ScheduleIT"><img class="h-20 md:h-[80%]" src="/OSU_ScheduleIT/img/logo.svg" alt=""></a>
                 <span class="text-4xl sm:hidden cursor-pointer">
                     <ion-icon name="menu-outline" onclick="Menu(this)"></ion-icon>
                 </span>
