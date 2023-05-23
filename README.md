@@ -26,7 +26,7 @@ how to run code
 xampp...
 
 ## Front-end design
-### 🤖[Check out our Figma Prototype!](https://www.figma.com/proto/k0BjEiY1yajNZD2sNG31jT/ScheduleIt?node-id=9-39&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=9%3A39)
+### 🛠️ [Check out our Figma Prototype!](https://www.figma.com/proto/k0BjEiY1yajNZD2sNG31jT/ScheduleIt?node-id=9-39&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=9%3A39) 🤖
 
 ## Back-end design
 database design image:
