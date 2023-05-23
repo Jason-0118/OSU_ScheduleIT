@@ -21,8 +21,16 @@ Schedule-It is a meeting scheduling software designed for students, teaching fac
 - ❌Can send "summary emails" based on appointment changes or emailing lists.
 
 ## Quick Start
-video demo run code
-how to run code
+### Usage
+
+Run `git help` for complete list of up-to-date options.
+
+To install source code locally on your machine using a terminal of your choice, simply type the following command:
+```
+git clone https://github.com/Jason-0118/OSU_ScheduleIT
+   ```
+That will copy the contents of this repository into your current working directory. 
+
 xampp...
 
 ## Front-end design
