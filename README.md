@@ -31,7 +31,16 @@ git clone https://github.com/Jason-0118/OSU_ScheduleIT
    ```
 That will copy the contents of this repository into your current working directory. 
 
-xampp...
+Next, in order to run the website on your machine via localhost, you will need to download XAMPP, a free Apache distro, which can be found [here](https://www.apachefriends.org/download.html).
+
+Once you've downloaded the installer for your OS and finished setting up the configuration steps, you should be able to access the XAMPP Control Panel.
+
+The XAMPP Control Panel should look like this with the default configuration steps:
+![image](https://github.com/Jason-0118/OSU_ScheduleIT/assets/91577254/a6b8a7b0-5b9f-4e91-b951-c2afad13afb3)
+
+Underneath *Actions*, click on the Start buttons for the *Apache* and MySQL* modules, like so:
+![image](https://github.com/Jason-0118/OSU_ScheduleIT/assets/91577254/0b16189d-6adb-4295-bfd9-a861d5d32270)
+
 
 ## Front-end design
 ### 🛠️ [Check out our Figma Prototype!](https://www.figma.com/proto/k0BjEiY1yajNZD2sNG31jT/ScheduleIt?node-id=9-39&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=9%3A39) 🤖
