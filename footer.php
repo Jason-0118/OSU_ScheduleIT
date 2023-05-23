@@ -1,11 +1,9 @@
+<!-- 
+** 
+* @file footer.php
+* @brief footer that reduce repeative code.
+* -->
 </main>
-
-
-
-
-
-
-
 <!-- index.php -->
 <script>
   function Menu(self) {

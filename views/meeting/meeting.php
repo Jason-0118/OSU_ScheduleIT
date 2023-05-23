@@ -1,32 +1,36 @@
 <?php
-session_start();
+/** 
+ * @file meeting.php
+ * @brief A web page that displays all meeting events.
+*/
 
+// start session
+session_start();
 ob_start();
+
+// set paths for website header and footer sections of webpage
 $header_path = $footer_path = $_SERVER['DOCUMENT_ROOT'];
 $header_path .= "/OSU_ScheduleIT/header.php";
 $footer_path .= "/OSU_ScheduleIT/footer.php";
 include_once($header_path);
 
-
+//account info for test
 $onid = "zhangxin2";
 $att_onid = "test_onid";
+
 //get all idEvent for creator
 $sql_idEvent = "SELECT idEvent FROM event WHERE hashUsers = (SELECT hashUsers FROM users WHERE onid = '$onid' )";
 $idEvent_result = mysqli_query($conn, $sql_idEvent);
 $idEvent_rows = mysqli_fetch_all($idEvent_result);
-// var_dump($idEvent_rows);
 
 //get idOptions from reservation info for as an attendees
 $sql_reservations = "SELECT idOptions FROM reservations WHERE hashUsers = (SELECT hashUsers FROM users WHERE onid = '$att_onid' )";
 $reservations_result = mysqli_query($conn, $sql_reservations);
 $reservations_rows = mysqli_fetch_all($reservations_result);
-// var_dump($reservations_rows);
-
-
-
 ?>
 
 
+<!-- Switch button -->
 <div class="flex justify-center mt-10 ">
     <div class="w-[90%]">
         <button id="creator_trigger" class='bg-orange text-white p-1 border-2 text-sm'>Creator</button>
@@ -34,9 +38,7 @@ $reservations_rows = mysqli_fetch_all($reservations_result);
     </div>
 </div>
 
-
-
-<!-- 4: attendees -->
+<!-- form -->
 <div id="attendee" class="flex justify-center mt-10 hidden">
     <div class="w-[90%]">
         <h2 class="font-bold text-orange text-xl">Attendee</h2>
@@ -53,6 +55,7 @@ $reservations_rows = mysqli_fetch_all($reservations_result);
             <tbody class="text-center">
 
                 <?php
+                //variables
                 $i = 0;
                 $past_reservation = null;
                 $current_time = time();
@@ -60,13 +63,14 @@ $reservations_rows = mysqli_fetch_all($reservations_result);
                 $location;
                 $description;
                 $date;
+                // loop through to display data from database
                 foreach ($reservations_rows as $row) {
                     foreach ($row as $idOptions) {
                         $sql_attendee = "SELECT o.date, e.topic, e.location, e.description FROM options as o, event as e WHERE o.idOptions = '$idOptions' AND o.idEvent = e.idEvent";
                         $attendee_result = mysqli_query($conn, $sql_attendee);
                         $attendee_rows = mysqli_fetch_assoc($attendee_result);
-                        // var_dump($attendee_rows);
 
+                        // filter upcoming events
                         if (strtotime($attendee_rows['date']) > $current_time) {
                             echo "<tr>";
                             echo " <td class='border-y px-1 py-2'> ";
@@ -93,6 +97,7 @@ $reservations_rows = mysqli_fetch_all($reservations_result);
                         }
                     }
                 }
+                // displat all the past event
                 if($past_reservation != null){
                     foreach ($past_reservation as $row) {
                         echo "<tr>";
@@ -113,8 +118,6 @@ $reservations_rows = mysqli_fetch_all($reservations_result);
                         echo "</td>";
                     }
                 }
-
-
                 ?>
 
             </tbody>
@@ -122,7 +125,7 @@ $reservations_rows = mysqli_fetch_all($reservations_result);
     </div>
 </div>
 
-<!-- 4: creator -->
+<!-- form -->
 <div id="creator" class="flex justify-center mt-10 ">
     <div class="w-[90%]">
         <h2 class="font-bold text-orange text-xl">Creator</h2>
@@ -138,17 +141,18 @@ $reservations_rows = mysqli_fetch_all($reservations_result);
             </thead>
             <tbody class="text-center">
                 <?php
+                //variables
                 $topic;
                 $location;
                 $description;
                 $detail;
+                // loop through to display data from database
                 foreach ($idEvent_rows as $row) {
                     foreach ($row as $idEvent) {
                         $sql_event = "SELECT topic, location, description, hashEvent FROM event WHERE idEvent = '$idEvent' ";
                         $event_result = mysqli_query($conn, $sql_event);
                         $event_rows = mysqli_fetch_assoc($event_result);
-                        // array[topic, location, description]
-                        // var_dump($event_rows);
+
                         echo "<tr>";
                         echo " <td class='border-y px-1 py-2'> ";
                         echo $event_rows['topic'];
@@ -174,6 +178,7 @@ $reservations_rows = mysqli_fetch_all($reservations_result);
 <?php include_once($footer_path); ?>
 
 <script>
+    // control the button to switch displaying creator or attendee
     var creator_form = document.getElementById("creator");
     var attendee_form = document.getElementById("attendee");
     var creator_trriger = document.getElementById("creator_trigger");

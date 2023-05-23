@@ -1,6 +1,11 @@
 <?php
+/** 
+ * @file invite.php
+ * @brief A web page that allow attendee to select timeslot
+*/
 session_start();
 ob_start();
+// set paths for website header and footer sections of webpage
 $header_path = $footer_path = $_SERVER['DOCUMENT_ROOT'];
 $header_path .= "/OSU_ScheduleIT/header.php";
 $footer_path .= "/OSU_ScheduleIT/footer.php";
@@ -62,10 +67,6 @@ if (mysqli_num_rows($result) > 0) {
         $timeslot_array[strtotime($row['date'])] = $row['totalSlots'];
     }
 }
-// var_dump($timeslot_array);
-// echo $timeslot_array[1678204800];
-
-
 ?>
 
 <!-- submit timeslot for attendees -->
@@ -108,9 +109,7 @@ if (isset($_POST['submit'])) {
     header('Location: /OSU_ScheduleIT/views/meeting/meeting.php');
 
 }
-
 ?>
-
 
 <!-- 1: summary -->
 <div class="flex justify-center">
@@ -137,7 +136,7 @@ if (isset($_POST['submit'])) {
 
 <form method="POST">
     <div class="flex-col md:flex md:flex-row md:justify-center">
-        <!-- -------------------------------------1st--------------------------------------------- -->
+        <!-- -------------------------------------graph 1--------------------------------------------- -->
         <?php
         $getDay = array('Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat');
 
@@ -201,7 +200,7 @@ if (isset($_POST['submit'])) {
         echo "</div>";
         ?>
 
-        <!-- -------------------------------------2nd--------------------------------------------- -->
+        <!-- -------------------------------------graph 2--------------------------------------------- -->
 
         <?php
         $getDay = array('Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat');
@@ -265,8 +264,6 @@ if (isset($_POST['submit'])) {
         echo "</div>";
         ?>
     </div>
-
-
 
     <!-- invite btn -->
     <div class="flex justify-between px-4 md:justify-start md:px-20">

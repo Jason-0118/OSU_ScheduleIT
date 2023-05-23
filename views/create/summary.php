@@ -1,6 +1,13 @@
 <?php
+
+/** 
+ * @file summary.php
+ * @brief A web page that displays creator's selection.
+*/
+
 session_start();
 ob_start();
+// set paths for website header and footer sections of webpage
 $header_path = $footer_path = $_SERVER['DOCUMENT_ROOT'];
 $header_path .= "/OSU_ScheduleIT/header.php";
 $footer_path .= "/OSU_ScheduleIT/footer.php";
@@ -76,7 +83,6 @@ if (mysqli_num_rows($result_name_list) > 0) {
     }
   }
 }
-
 
 if (isset($_POST['submit'])) {
 }

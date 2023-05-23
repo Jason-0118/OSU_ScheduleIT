@@ -1,4 +1,8 @@
-<?php 
+<?php
+/** 
+ * @file index.php
+ * @brief Home page
+*/
 session_unset();
 ob_start();
 session_start();
@@ -9,7 +13,6 @@ include_once 'header.php';
 <?php
 // Get the JSON string from the request body
 $jsonString = file_get_contents('php://input');
-
 
 $topicErr = $locationErr = '';
 //store start_date, end_date, time_duration
@@ -69,8 +72,8 @@ if (isset($_POST['submit'])) {
         }
     }
 }
-
 ?>
+
 
 <div class="relative">
     <!-- bg -->
@@ -117,7 +120,6 @@ if (isset($_POST['submit'])) {
             </div>
 
             <!-- date range -->
-
             <div class="flex justify-center items-center space-x-5">
                 <input type="date" id="start_date" name="start_date">
                 <span class="font-bold">to</span>
@@ -149,15 +151,14 @@ if (isset($_POST['submit'])) {
 
 <!-- index.php -->
 <script>
-  function Menu(self) {
-    const list = document.querySelector("ul");
-    self.name === 'menu-outline' ? (self.name = "close-outline", list.classList.add("top-[80px]"), list.classList.add("opacity-100"), list.classList.add("z-[100]")) :
-      (self.name = "menu-outline", list.classList.remove("top-[80px]"), list.classList.remove("opacity-100"), list.classList.remove("z-[100]"))
-  }
+    function Menu(self) {
+        const list = document.querySelector("ul");
+        self.name === 'menu-outline' ? (self.name = "close-outline", list.classList.add("top-[80px]"), list.classList.add("opacity-100"), list.classList.add("z-[100]")) :
+            (self.name = "menu-outline", list.classList.remove("top-[80px]"), list.classList.remove("opacity-100"), list.classList.remove("z-[100]"))
+    }
 
-
-  function Dropdown() {
-    const list = document.getElementById("dropdown");
-    list.classList.toggle("hidden");
-  }
+    function Dropdown() {
+        const list = document.getElementById("dropdown");
+        list.classList.toggle("hidden");
+    }
 </script>

@@ -1,7 +1,12 @@
 <?php
-session_start();
+/** 
+ * @file create.php
+ * @brief A web page that collect input from user
+*/
 
+session_start();
 ob_start();
+// set paths for website header and footer sections of webpage
 $header_path = $footer_path = $_SERVER['DOCUMENT_ROOT'];
 $header_path .= "/OSU_ScheduleIT/header.php";
 $footer_path .= "/OSU_ScheduleIT/footer.php";
