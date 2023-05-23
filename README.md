@@ -23,24 +23,35 @@ Schedule-It is a meeting scheduling software designed for students, teaching fac
 ## Quick Start
 ### Usage
 
-Run `git help` for complete list of up-to-date options.
-
-To install source code locally on your machine using a terminal of your choice, simply type the following command:
-```
-git clone https://github.com/Jason-0118/OSU_ScheduleIT
-   ```
-That will copy the contents of this repository into your current working directory. 
-
-Next, in order to run the website on your machine via localhost, you will need to download XAMPP, a free Apache distro, which can be found [here](https://www.apachefriends.org/download.html).
+In order to run the website on your machine via localhost, you will need to download XAMPP, a free Apache distro, which can be found [here](https://www.apachefriends.org/download.html).
 
 Once you've downloaded the installer for your OS and finished setting up the configuration steps, you should be able to access the XAMPP Control Panel.
 
 The XAMPP Control Panel should look like this with the default configuration steps:
 ![image](https://github.com/Jason-0118/OSU_ScheduleIT/assets/91577254/a6b8a7b0-5b9f-4e91-b951-c2afad13afb3)
 
-Underneath *Actions*, click on the Start buttons for the *Apache* and MySQL* modules, like so:
+Underneath *Actions*, click on the Start buttons for the *Apache* and *MySQL* modules, like so:
 ![image](https://github.com/Jason-0118/OSU_ScheduleIT/assets/91577254/0b16189d-6adb-4295-bfd9-a861d5d32270)
 
+The final step is to copy the source code from the GitHub repo. 
+
+Make sure your current working directory is as follows:
+```
+C:\xampp\htdocs
+   ```
+Run `git help` for complete list of up-to-date options.
+
+Then, to install source code locally on your machine using a terminal of your choice, simply type the following command:
+```
+git clone https://github.com/Jason-0118/OSU_ScheduleIT
+   ```
+That will copy the contents of this repository into your current working directory. 
+
+Go to a browser of your choice and type:
+```
+localhost/index.php
+   ```
+You should now be able to navigate through the website on your local machine!
 
 ## Front-end design
 ### 🛠️ [Check out our Figma Prototype!](https://www.figma.com/proto/k0BjEiY1yajNZD2sNG31jT/ScheduleIt?node-id=9-39&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=9%3A39) 🤖
