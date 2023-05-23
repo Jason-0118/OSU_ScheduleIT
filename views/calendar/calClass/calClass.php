@@ -1,23 +1,47 @@
 <?php
+
+/**
+ * @class Calendar
+ * A class representing a calendar.
+*/
 class Calendar {
-    // init vars
+    /** @brief
+     * Initialize vars for current date and event array.
+     * 
+     * @var int $activeYear The active year of the calendar.
+     * @var int $activeMonth The active month of the calendar.
+     * @var int $activeDay The active day of the calendar.
+     * @var array $eventArr An array to store events in the calendar.
+    */
     private $activeYear, $activeMonth, $activeDay;
     private $eventArr = [];
 
-    // initialize object properties when creating calendar object
+    /** @brief
+     * Initializes a new instance of the Calendar class.
+     * @param string|null $date The date to set as the active date (optional). If not provided, the current date will be used.
+    */
     public function __construct($date = null) {
         $this->activeDay = $date != null ? date('d', strtotime($date)) : date('d');
         $this->activeMonth = $date != null ? date('m', strtotime($date)) : date('m');
         $this->activeYear = $date != null ? date('Y', strtotime($date)) : date('Y');
     }
 
-    // func to add event to calendar (By default, days is 1 and color is amber)
+    /** @brief
+     * Adds an event to the calendar. By default, the event lasts for 1 day and has the color "amber".
+     * @param string $evName The name of the event.
+     * @param string $evDate The date of the event in the format "YYYY-MM-DD".
+     * @param int $evDays The duration of the event in days (optional).
+     * @param string $evColor The color of the event (optional).
+    */
     public function addEvent($evName, $evDate, $evDays = 1, $evColor = '') {
         $evColor = $evColor ? ' ' . $evColor : $evColor;
         $this->eventArr[] = [$evName, $evDate, $evDays, $evColor];
     }
 
-    // return string content of calendar element
+    /** @brief
+     * Returns the string content of the calendar element.
+     * @return string The HTML representation of the calendar.
+    */
     public function __toString() {
         // get number of days in given month
         $totalDaysInMonth = date('t', strtotime($this->activeDay . '-' . $this->activeMonth . '-' . $this->activeYear));
