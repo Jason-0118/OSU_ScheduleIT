@@ -26,7 +26,9 @@ how to run code
 xampp...
 
 ## Front-end design
-figma url
+figma url: https://www.figma.com/proto/k0BjEiY1yajNZD2sNG31jT/ScheduleIt?node-id=9-39&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=9%3A39 
 
 ## Back-end design
-database design image...
+database design image:
+![image](https://github.com/Jason-0118/OSU_ScheduleIT/assets/91577254/56604878-da60-4006-89e0-96dac0da7c96)
+
