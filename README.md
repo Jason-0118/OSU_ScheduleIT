@@ -9,10 +9,10 @@
 Schedule-It is a meeting scheduling software designed for students, teaching faculty, and professors at Oregon State University. Through an integrated calendar, Schedule-It offers its users flexibility and comfort as meetings can be arranged quickly and securely all in one centralized platform. Thus, Schedule-It cuts out inefficient time spent coordinating to let OSU students and faculty get to work sooner.
 
 ## Creat Event
-![Alt Text: Demonstration of creating event]( https://im3.ezgif.com/tmp/ezgif-3-8e2d48dabb.gif)
+![Alt Text: Demonstration of creating event](https://github.com/Jason-0118/OSU_ScheduleIT/assets/91388713/486b291f-cbf1-46e6-9b9b-92e83e1fab07)
 
 ## Invite Attendee
-![Alt Text: Demonstration of attend event via link](https://im3.ezgif.com/tmp/ezgif-3-9b2ecc138f.gif)
+![Alt Text: Demonstration of attend event via link](https://github.com/Jason-0118/OSU_ScheduleIT/assets/91388713/467b80a7-6761-49e3-9b58-57e56161922d)
 
 <h2 align="center"> Demo Video </h2>
 ...
