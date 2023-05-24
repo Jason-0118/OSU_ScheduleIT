@@ -12,7 +12,7 @@ Schedule-It is a meeting scheduling software designed for students, teaching fac
 ![Alt Text: Demonstration of creating event](https://im3.ezgif.com/tmp/ezgif-3-56d9988e0b.gif)
 
 ## Invite Attendee
-![Alt Text: Demonstration of attend event via link](https://im3.ezgif.com/tmp/ezgif-3-7c2e6944af.gif)
+![Alt Text: Demonstration of attend event via link](https://im3.ezgif.com/tmp/ezgif-3-9b2ecc138f.gif)
 
 <h2 align="center"> Demo Video </h2>
 ...
