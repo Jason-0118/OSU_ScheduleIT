@@ -1,11 +1,18 @@
 # Oregon State University - Schedule-It
-<p align="center"><img src="https://lh3.googleusercontent.com/pw/AJFCJaUijRE_qyiuXSb333XAHMiusOJ499Uy3d_hPMRABn-Npd9873pqRaYSPlHwYzo5V0hghlELVZdCJydb1Zr7X9bws4xxhjueiFyrYkCzMPq2JwODDRtukeOtMQM1dVzXhbNDlG-Se0pCQYIhdoY3P4z4p6JGKIR2LGGfyejhMfgtE-8o_wszC2EJjxOSiXRalGCiEdTILSiivo10H_ZLb7ZpbvPKdkSPLxahBvWJI8QGYXUHLsV33hM5QqUk-cCQrMeKkURQeadOU5uKqMCU3CwBaT-owOO2RrjnSIDZ4Y6dyIhM47zOhH2WvCgBNGv6_hI5kAu3W2ibWUqUwikd3AdkoYl8Y5_0JPRVGxWk-AlcvPPKA2ndp4gSt0lm_AFsPJ_7bA3BrQ6foNeSXbuwKcJOPcYndEkyQwdA2K_-HIhFYci3e7B_-5Wi1JSxzrRvf6nRCvL-zBkUsZW2hPgGiClu7uSE-3lU4l7ROi1z6kB0_yBmC5oCbAvnYKUhcVaPZDlmEGzKR8F9JnJTW4k385AFcHBGly5pCyc_PRUvcSadhpvoCrOWq2DUhJoAsQSM9MKNVR0EhVaMn2xpyfjpwDev6_uUIA_b8uZsuYSYrC51tpVIFN-2guddnU4VCTL7_IFJb4WOcNqmCGhE3T2BN1e1mItbzTKt6pydT5rKiO9frPTgrhR7FRUS57kkx3yJMb_o72rkeakMY2yhMmNp88GGqBIebzN0dL0x33rPOBs3JgH3aNmLM0BmJchWm97Ed_hfqxXIl5shuH5uv5OnR_3c2Vocw9XTnizFVbzmMH50VCAiSL7cw8YjvFkvsCuDYtKAIkz223LYXlCbb5UdpYU9Z1_U-yg1e15kELYtE17VLEWtlyiOsEfGnGC3yCmTo3rkToXDSrZqIobMQF7G2bAmsAtwidozIYzS2njhG08dlVul_sXDhwXjSeWDjQaAXisvF1Fa0psZ4D8rIrTmE_DGg4oRXvd335V5pFUKHgYsXEyZZCksLpMjnMhvxXtp00D4Q_xtkL2_NGb2uKQDtsg2-3wBTjJAX6LP18Nrvg=w1343-h873-s-no?authuser=0"/></p>
+![Alt Text: Demonstration of home page](https://github.com/Jason-0118/OSU_ScheduleIT/assets/91388713/b174b018-0bd5-4043-8f15-b5d7b919eb72
+)
 
 
 ## 💡 [Demo Website📃](https://osu-scheduleit.000webhostapp.com/OSU_ScheduleIT/index.php) - [Discord 💬](https://discord.gg/BwgpFa3Mj5) - [Supported Tools 🧰](https://it.engineering.oregonstate.edu/supported-tools-platforms-web-development)
 
 <h2 align="center"> Project Description </h2>
 Schedule-It is a meeting scheduling software designed for students, teaching faculty, and professors at Oregon State University. Through an integrated calendar, Schedule-It offers its users flexibility and comfort as meetings can be arranged quickly and securely all in one centralized platform. Thus, Schedule-It cuts out inefficient time spent coordinating to let OSU students and faculty get to work sooner.
+
+## Creat Event
+![Alt Text: Demonstration of creating event](https://im3.ezgif.com/tmp/ezgif-3-56d9988e0b.gif)
+
+## Invite Attendee
+![Alt Text: Demonstration of attend event via link](https://im3.ezgif.com/tmp/ezgif-3-7c2e6944af.gif)
 
 <h2 align="center"> Demo Video </h2>
 ...
