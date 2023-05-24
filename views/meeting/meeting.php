@@ -70,8 +70,6 @@ $reservations_rows = mysqli_fetch_all($reservations_result);
                         $attendee_result = mysqli_query($conn, $sql_attendee);
                         $attendee_rows = mysqli_fetch_assoc($attendee_result);
 
-                        // filter upcoming events
-                        if (strtotime($attendee_rows['date']) > $current_time) {
                             echo "<tr>";
                             echo " <td class='border-y px-1 py-2'> ";
                             echo $attendee_rows['topic'];
@@ -88,13 +86,6 @@ $reservations_rows = mysqli_fetch_all($reservations_result);
                             echo " <td class='border-y px-1 py-2'> ";
                             echo $attendee_rows['date'];
                             echo "</td>";
-                        } else {
-                            $past_reservation[$i]['topic'] = $attendee_rows['topic'];
-                            $past_reservation[$i]['location'] = $attendee_rows['location'];
-                            $past_reservation[$i]['description'] = $attendee_rows['description'];
-                            $past_reservation[$i]['date'] = $attendee_rows['date'];
-                            ++$i;
-                        }
                     }
                 }
                 // displat all the past event
@@ -113,7 +104,7 @@ $reservations_rows = mysqli_fetch_all($reservations_result);
                         echo $attendee_rows['description'];
                         echo "</td>";
     
-                        echo " <td class='border-y px-1 py-2 line-through decoration-pink-500'> ";
+                        echo " <td class='border-y px-1 py-2 decoration-pink-500'> ";
                         echo $attendee_rows['date'];
                         echo "</td>";
                     }

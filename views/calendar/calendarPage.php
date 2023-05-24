@@ -13,8 +13,8 @@ include 'calClass/calClass.php';
 
 // set paths for website header and footer sections of webpage
 $header_path = $footer_path = $_SERVER['DOCUMENT_ROOT'];
-$header_path .= "../header.php";
-$footer_path .= "../footer.php";
+$header_path .= "/OSU_ScheduleIT/header.php";
+$footer_path .= "/OSU_ScheduleIT/footer.php";
 
 // include default webpage header
 include_once($header_path);
@@ -151,7 +151,7 @@ $calendar = new Calendar($currentDate);
 					ON event.idEvent = options.idEvent";
 	
 	// display queried event in calendar page after fetching columns specified from database
-	if ($result = mysqli_query($link, $sql)) {
+	if ($result = mysqli_query($conn, $sql)) {
 		if (mysqli_num_rows($result) >= 0) {
 			while ($row = mysqli_fetch_array($result)) {
 				$name = $row['topic'];
@@ -168,11 +168,11 @@ $calendar = new Calendar($currentDate);
 		}
 	} else {
 		// if error occured while trying to access database
-		echo "ERROR: Could not execute $sql. <br>" . mysqli_error($link);
+		echo "ERROR: Could not execute $sql. <br>" . mysqli_error($conn);
 	}
 
 	// Close connection to database
-	mysqli_close($link);
+	mysqli_close($conn);
 	?>
 
 
