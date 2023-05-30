@@ -15,7 +15,7 @@ Schedule-It is a meeting scheduling software designed for students, teaching fac
 ![Alt Text: Demonstration of attend event via link](https://github.com/Jason-0118/OSU_ScheduleIT/assets/91388713/467b80a7-6761-49e3-9b58-57e56161922d)
 
 <h2 align="center"> Demo Video </h2>
-...
+https://media.oregonstate.edu/media/t/1_kcuqkpg2
 
 ## All Features(❌ not complete yet)
 - ✅Webtool has a reserver portal and an admin portal for seeing reservations.
