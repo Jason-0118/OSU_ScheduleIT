@@ -37,7 +37,7 @@ Once you've downloaded the installer for your OS and finished setting up the con
 The XAMPP Control Panel should look like this with the default configuration steps:
 ![image](https://github.com/Jason-0118/OSU_ScheduleIT/assets/91577254/a6b8a7b0-5b9f-4e91-b951-c2afad13afb3)
 
-Underneath *Actions*, click on the Start buttons for the *Apache* and *MySQL* modules, like so:
+Under *Actions*, click on the Start buttons for the *Apache* and *MySQL* modules, like so:
 ![image](https://github.com/Jason-0118/OSU_ScheduleIT/assets/91577254/0b16189d-6adb-4295-bfd9-a861d5d32270)
 
 The final step is to copy the source code from the GitHub repo. 
