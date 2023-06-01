@@ -67,3 +67,8 @@ You should now be able to navigate through the website on your local machine!
 database design image:
 ![image](https://github.com/Jason-0118/OSU_ScheduleIT/assets/91577254/56604878-da60-4006-89e0-96dac0da7c96)
 
+
+## Copyright & License
+Copyright (c) Xin Zhang, Darren Pradeep, Santosh Ramesh.
+
+This project is licensed under the terms of the MIT license.
